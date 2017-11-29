@@ -1,6 +1,10 @@
-﻿Login-AzureRmAccount
+﻿Import-Module AzureRM
+Import-Module Azure
+Import-Module AzureAD
+
+
+Login-AzureRmAccount
 
 Get-AzureRmSubscription
 
-#Inspectation
-Set-AzureRmContext -TenantId "GUID"
+#Set-AzureRmContext -TenantId "GUID"

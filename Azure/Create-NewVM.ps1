@@ -8,7 +8,7 @@ $InterfaceName = "ServerInterface01"
 
 ## Compute
 $VMName = "VM-P-Test001"
-$ComputerName = "VM-P-Test0012"
+$ComputerName = "VM-P-Test001"
 $VMSize = "Standard_A2"
 $OSDiskName = $VMName
 

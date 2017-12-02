@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "virtualMachineName": {
+            "value": "VM-Test005"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_A1_v2"
+        },
+        "adminUsername": {
+            "value": "testAdmin"
+        },
+        "virtualNetworkName": {
+            "value": "VNet01"
+        },
+        "networkInterfaceName": {
+            "value": "vm-test005478"
+        },
+        "networkSecurityGroupName": {
+            "value": "Test-NSG"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "azuretestdiag001"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/azure-test/providers/Microsoft.Storage/storageAccounts/azuretestdiag001"
+        },
+        "subnetName": {
+            "value": "Subnet1"
+        }
+    }
+}

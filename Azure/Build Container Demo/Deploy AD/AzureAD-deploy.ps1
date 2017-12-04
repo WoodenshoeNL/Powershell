@@ -64,6 +64,8 @@ Function RegisterRP {
 # Script body
 # Execution begins here
 #******************************************************************************
+Get-Date
+
 $ErrorActionPreference = "Stop"
 
 # sign in
@@ -105,3 +107,5 @@ if(Test-Path $parametersFilePath) {
 } else {
     New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $templateFilePath;
 }
+
+Get-Date

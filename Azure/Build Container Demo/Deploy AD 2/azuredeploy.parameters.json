@@ -3,16 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "GEN-UNIQUE"
+      "value": "Test-Admin"
     },
     "adminPassword": {
-      "value": "GEN-PASSWORD"
+      "value": "L3M86r9wp67gB7iA3zjk"
     },
     "domainName": {
-      "value": "mydomain.local"
+      "value": "test-domain.local"
     },
     "dnsPrefix": {
-      "value": "GEN-UNIQUE"
+      "value": "test-wood-L3M8"
     }
   }
 }

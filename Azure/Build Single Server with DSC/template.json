@@ -37,11 +37,25 @@
         },
         "subnetName": {
             "type": "string"
-        }
+        },
+        "modulesUrl": {
+            "type": "string",
+            "metadata": {
+              "description": "URL for the DSC configuration module. NOTE: Can be a Github url(raw) to the zip file"
+            }
+          },
+          "configurationFunction": {
+            "type": "string",
+            "defaultValue": "ContosoWebsite.ps1\\ContosoWebsite",
+            "metadata": {
+              "description": "DSC configuration function to call"
+            }
+          }
     },
     "variables": {
         "vnetId": "[resourceId('Azure-Test','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "vmExtensionName": "dscExtension"
     },
     "resources": [
         {
@@ -129,11 +143,11 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('vmName'),'/', variables('vmExtensionName'))]",
+            "name": "[concat(parameters('virtualMachineName'),'/', variables('vmExtensionName'))]",
             "apiVersion": "2015-05-01-preview",
             "location": "[resourceGroup().location]",
             "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
             ],
             "properties": {
               "publisher": "Microsoft.Powershell",
@@ -144,7 +158,7 @@
                 "ModulesUrl": "[parameters('modulesUrl')]",
                 "ConfigurationFunction": "[parameters('configurationFunction')]",
                 "Properties": {
-                  "MachineName": "[parameters('vmName')]"
+                  "MachineName": "[parameters('virtualMachineName')]"
                 }
               },
               "protectedSettings": null

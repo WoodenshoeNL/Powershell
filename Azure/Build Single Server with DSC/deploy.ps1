@@ -41,10 +41,10 @@ param(
  $deploymentName = "Test-Deployment",
 
  [string]
- $templateFilePath = "Azuredeploy.json",
+ $templateFilePath = "template.json",
 
  [string]
- $parametersFilePath = "Azuredeploy.parameters.json"
+ $parametersFilePath = "parameters.json"
 )
 
 <#
@@ -64,17 +64,26 @@ Function RegisterRP {
 # Script body
 # Execution begins here
 #******************************************************************************
-Get-Date
-
 $ErrorActionPreference = "Stop"
 
+get-date
+
 # sign in
-Write-Host "Logging in...";
-Login-AzureRmAccount;
+#Write-Host "Logging in...";
+#Login-AzureRmAccount;
 
 # select subscription
-Write-Host "Selecting subscription '$subscriptionId'";
-Select-AzureRmSubscription -SubscriptionID $subscriptionId;
+#Write-Host "Selecting subscription '$subscriptionId'";
+#Select-AzureRmSubscription -SubscriptionID $subscriptionId;
+
+# Register RPs
+$resourceProviders = @("microsoft.compute","microsoft.network");
+if($resourceProviders.length) {
+    Write-Host "Registering resource providers"
+    foreach($resourceProvider in $resourceProviders) {
+        RegisterRP($resourceProvider);
+    }
+}
 
 #Create or check for existing resource group
 $resourceGroup = Get-AzureRmResourceGroup -Name $resourceGroupName -ErrorAction SilentlyContinue
@@ -99,4 +108,4 @@ if(Test-Path $parametersFilePath) {
     New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $templateFilePath;
 }
 
-Get-Date
+get-date

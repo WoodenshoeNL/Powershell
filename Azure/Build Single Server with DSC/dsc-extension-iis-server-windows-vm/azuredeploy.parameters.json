@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "newStorageAccountName": {
-            "value": "GEN-UNIQUE"
+            "value": "Test-Wood-DSC-Deploy1"
         },
         "vmName": {
-            "value": "GEN-UNIQUE-8"
+            "value": "DSC-Deploy1"
         },
         "vmSize": {
             "value": "Standard_A2"

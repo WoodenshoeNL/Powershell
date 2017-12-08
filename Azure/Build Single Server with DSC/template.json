@@ -126,7 +126,30 @@
                     "id": "[resourceId('Azure-Test', 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
                 }
             }
-        }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('vmName'),'/', variables('vmExtensionName'))]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+              "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.Powershell",
+              "type": "DSC",
+              "typeHandlerVersion": "2.19",
+              "autoUpgradeMinorVersion": true,
+              "settings": {
+                "ModulesUrl": "[parameters('modulesUrl')]",
+                "ConfigurationFunction": "[parameters('configurationFunction')]",
+                "Properties": {
+                  "MachineName": "[parameters('vmName')]"
+                }
+              },
+              "protectedSettings": null
+            }
+          }
     ],
     "outputs": {
         "adminUsername": {

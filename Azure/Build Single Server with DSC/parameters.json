@@ -39,7 +39,7 @@
             "value": "Subnet1"
         },
         "modulesUrl": {
-            "value": "https://github.com/Azure/azure-quickstart-templates/raw/master/dsc-extension-iis-server-windows-vm/ContosoWebsite.ps1.zip"
+            "value": "https://github.com/WoodenshoeNL/Powershell/tree/master/Azure/Build%20Single%20Server%20with%20DSC/ContosoWebsite.ps1.zip"
         },
         "configurationFunction": {
             "value": "ContosoWebsite.ps1\\ContosoWebsite"

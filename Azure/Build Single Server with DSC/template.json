@@ -55,6 +55,8 @@
     "variables": {
         "vnetId": "[resourceId('Azure-Test','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "publicIPAddressType": "Dynamic",
+        "publicIPAddressName": "dscPubIP",
         "vmExtensionName": "dscExtension"
     },
     "resources": [
@@ -119,11 +121,20 @@
             }
         },
         {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('publicIPAddressName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+              "publicIPAllocationMethod": "[variables('publicIPAddressType')]"
+            }
+        },
+        {
             "name": "[parameters('networkInterfaceName')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
-            "dependsOn": [],
+            "dependsOn": ["[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"],
             "properties": {
                 "ipConfigurations": [
                     {

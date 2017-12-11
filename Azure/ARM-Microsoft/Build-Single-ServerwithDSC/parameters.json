@@ -39,7 +39,7 @@
             "value": "Subnet1"
         },
         "modulesUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Single-ServerwithDSC/ContosoWebsite.ps1.zip"
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/ARM-Microsoft/Build-Single-ServerwithDSC/ContosoWebsite.ps1.zip"
         },
         "configurationFunction": {
             "value": "ContosoWebsite.ps1\\ContosoWebsite"

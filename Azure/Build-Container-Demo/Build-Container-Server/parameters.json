@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "virtualMachineName": {
+            "value": "VM-Test004"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_A2"
+        },
+        "adminUsername": {
+            "value": "testadmin"
+        },
+        "virtualNetworkName": {
+            "value": "VNet01"
+        },
+        "networkInterfaceName": {
+            "value": "vm-test004239"
+        },
+        "networkSecurityGroupName": {
+            "value": "Test-NSG"
+        },
+        "adminPassword": {
+            "value": "P@ssw0rd123123"
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "azuretestdiag001"
+        },
+        "diagnosticsStorageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "Microsoft.Storage/storageAccounts/azuretestdiag001"
+        },
+        "subnetName": {
+            "value": "Subnet1"
+        },
+        "modulesUrl": {
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/ARM-Microsoft/Build-Single-ServerwithDSC/ContosoWebsite.ps1.zip"
+        },
+        "configurationFunction": {
+            "value": "ContosoWebsite.ps1\\ContosoWebsite"
+        }
+    }
+}

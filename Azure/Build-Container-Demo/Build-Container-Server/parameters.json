@@ -38,11 +38,17 @@
         "subnetName": {
             "value": "Subnet1"
         },
-        "modulesUrl": {
+        "storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "storageAccountName": {
+            "value": "ScriptRun-SA"
+        },
+        "ScriptsUrl": {
             "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/ARM-Microsoft/Build-Single-ServerwithDSC/ContosoWebsite.ps1.zip"
         },
-        "configurationFunction": {
-            "value": "ContosoWebsite.ps1\\ContosoWebsite"
+        "commandToExecute": {
+            "value": "powershell -ExecutionPolicy Unrestricted -File Install-DockerOnWS2016UsingDSC.ps1"
         }
     }
 }

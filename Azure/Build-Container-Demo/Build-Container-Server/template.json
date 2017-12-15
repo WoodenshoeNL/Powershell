@@ -204,33 +204,10 @@
                 "protectedSettings": {
                     "commandToExecute": "[parameters('commandToExecute')]",
                     "storageAccountName": "[parameters('storageAccountName')]",
-                    "storageAccountKey": "[parameters('storageAccountName')]"
+                    "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
                 }
             }
         }
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('virtualMachineName'),'/', variables('vmExtensionName'))]",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
-            ],
-            "properties": {
-              "publisher": "Microsoft.Powershell",
-              "type": "DSC",
-              "typeHandlerVersion": "2.19",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "ModulesUrl": "[parameters('modulesUrl')]",
-                "ConfigurationFunction": "[parameters('configurationFunction')]",
-                "Properties": {
-                  "MachineName": "[parameters('virtualMachineName')]"
-                }
-              },
-              "protectedSettings": null
-            }
-          }
     ],
     "outputs": {
         "adminUsername": {

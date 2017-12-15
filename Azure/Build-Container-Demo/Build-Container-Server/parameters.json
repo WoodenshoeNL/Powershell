@@ -45,7 +45,7 @@
             "value": "ScriptRun-SA"
         },
         "ScriptsUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/ARM-Microsoft/Build-Single-ServerwithDSC/ContosoWebsite.ps1.zip"
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/Install-DockerOnWS2016UsingDSC.ps1"
         },
         "commandToExecute": {
             "value": "powershell -ExecutionPolicy Unrestricted -File Install-DockerOnWS2016UsingDSC.ps1"

@@ -185,7 +185,7 @@
         {
             "apiVersion": "2015-06-15",
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('virtualMachineName'),'/', variables('vmExtensionName'))]",
+            "name": "Microsoft.Compute/virtualMachines/PowershellExtension/Container",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]",
@@ -202,9 +202,7 @@
                     ]
                 },
                 "protectedSettings": {
-                    "commandToExecute": "[parameters('commandToExecute')]",
-                    "storageAccountName": "[parameters('storageAccountName')]",
-                    "storageAccountKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
+                    "commandToExecute": "[parameters('commandToExecute')]"
                 }
             }
         }

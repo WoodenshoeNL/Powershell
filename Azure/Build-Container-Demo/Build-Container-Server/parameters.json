@@ -42,7 +42,7 @@
             "value": "Standard_LRS"
         },
         "storageAccountName": {
-            "value": "ScriptRun-SA"
+            "value": "scriptrunsa"
         },
         "ScriptsUrl": {
             "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/Install-DockerOnWS2016UsingDSC.ps1"

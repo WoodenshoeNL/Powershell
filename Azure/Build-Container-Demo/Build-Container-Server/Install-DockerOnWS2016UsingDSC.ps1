@@ -231,19 +231,23 @@ Set-DscLocalConfigurationManager `
 
 # Compile the Node Config
 Write-Verbose -Verbose -Message  "Compiling DSC Configuration"
-ContainerHostDsc `
-    -OutputPath $workspace `
-    -ConfigurationData $ConfigData
+#ContainerHostDsc `
+#    -OutputPath $workspace `
+#    -ConfigurationData $ConfigData
 
 # Apply the DSC Configuration
 Write-Verbose -Verbose -Message  "Applying DSC Configuration"
-Start-DscConfiguration `
-    -Path "$workspace" `
-    -ComputerName $ComputerName `
-    -Wait `
-    -Force `
-    -Verbose
+#Start-DscConfiguration `
+#    -Path "$workspace" `
+#    -ComputerName $ComputerName `
+#    -Wait `
+#    -Force `
+#    -Verbose
 
 # Clean up
 Write-Verbose -Verbose -Message  "Removing Temporary Workspace Folder $workspace"
 Remove-Item -Path $workspace -Recurse -Force
+
+$log = Join-Path -Path $ENV:TEMP -ChildPath "DSC-test.log"
+Set-Content -Path $log -Value ${get-date}
+

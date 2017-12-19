@@ -24,7 +24,12 @@
             "value": "Test-NSG"
         },
         "adminPassword": {
-            "value": "P@ssw0rd123123"
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/examplegroup/providers/Microsoft.KeyVault/vaults/ScriptKeyVault"
+                },
+                "secretName": "testAdmin"
+            }
         },
         "diagnosticsStorageAccountName": {
             "value": "azuretestdiag001"

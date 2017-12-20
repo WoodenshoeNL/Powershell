@@ -54,13 +54,13 @@
         "storageAccountName": {
             "type": "string"
         },
-        "ScriptsUrl": {
+        "DSCprepScriptsUrl": {
             "type": "string",
             "metadata": {
               "description": "URL for the DSC configuration module. NOTE: Can be a Github url(raw) to the zip file"
             }
         },
-        "commandToExecute": {
+        "DSCprepcommandToExecute": {
             "type": "string",
             "metadata": {
               "description": "Commandline to start Powershell script"
@@ -185,7 +185,7 @@
         {
             "apiVersion": "2015-06-15",
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('virtualMachineName'),'/', 'ContainerScript')]",
+            "name": "[concat(parameters('virtualMachineName'),'/', 'DscprepScript')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
@@ -197,11 +197,11 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [
-                        "[parameters('ScriptsUrl')]"
+                        "[parameters('DSCprepScriptsUrl')]"
                     ]
                 },
                 "protectedSettings": {
-                    "commandToExecute": "[parameters('commandToExecute')]"
+                    "DSCprepcommandToExecute": "[parameters('commandToExecute')]"
                 }
             }
         }

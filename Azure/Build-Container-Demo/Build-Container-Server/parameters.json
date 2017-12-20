@@ -49,11 +49,17 @@
         "storageAccountName": {
             "value": "scriptrunsa"
         },
-        "ScriptsUrl": {
+        "ContainerScriptsUrl": {
             "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/Install-DockerOnWS2016UsingDSC.ps1"
         },
-        "commandToExecute": {
+        "ContainercommandToExecute": {
             "value": "powershell -ExecutionPolicy Unrestricted -File Install-DockerOnWS2016UsingDSC.ps1"
+        },
+        "DSCprepScriptsUrl": {
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/DSC/DSCprep.ps1"
+        },
+        "DSCprepcommandToExecute": {
+            "value": "powershell -ExecutionPolicy Unrestricted -File DSCprep.ps1"
         }
     }
 }

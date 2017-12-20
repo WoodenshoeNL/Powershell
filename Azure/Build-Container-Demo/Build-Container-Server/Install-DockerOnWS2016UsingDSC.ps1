@@ -249,5 +249,5 @@ Write-Verbose -Verbose -Message  "Removing Temporary Workspace Folder $workspace
 Remove-Item -Path $workspace -Recurse -Force
 
 $log = Join-Path -Path $ENV:TEMP -ChildPath "DSC-test.log"
-Set-Content -Path $log -Value ${get-date}
+Set-Content -Path $log -Value $(get-date)
 

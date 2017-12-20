@@ -55,4 +55,5 @@
         "prepcommandToExecute": {
             "value": "powershell -ExecutionPolicy Unrestricted -File DSCprep.ps1"
         }
+    }
 }

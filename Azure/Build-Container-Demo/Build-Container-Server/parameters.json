@@ -54,6 +54,12 @@
         },
         "DSCprepcommandToExecute": {
             "value": "powershell -ExecutionPolicy Unrestricted -File DSCprep.ps1"
+        },
+        "ContainerScriptsUrl": {
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/Install-DockerOnWS2016UsingDSC.ps1"
+        },
+        "ContainercommandToExecute": {
+            "value": "powershell -ExecutionPolicy Unrestricted -File Install-DockerOnWS2016UsingDSC.ps1"
         }
     }
 }

@@ -65,7 +65,19 @@
             "metadata": {
               "description": "Commandline to start Powershell script"
             }
-          }
+        },
+        "ContainerScriptsUrl": {
+            "type": "string",
+            "metadata": {
+              "description": "URL for the DSC configuration module. NOTE: Can be a Github url(raw) to the zip file"
+            }
+        },
+        "ContainercommandToExecute": {
+            "type": "string",
+            "metadata": {
+              "description": "Commandline to start Powershell script"
+            }
+        }
     },
     "variables": {
         "vnetId": "[resourceId('Azure-Test','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
@@ -202,6 +214,29 @@
                 },
                 "protectedSettings": {
                     "commandToExecute": "[parameters('DSCprepcommandToExecute')]"
+                }
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('virtualMachineName'),'/', 'ContainerScript')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[parameters('ContainerScriptsUrl')]"
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[parameters('ContainercommandToExecute')]"
                 }
             }
         }

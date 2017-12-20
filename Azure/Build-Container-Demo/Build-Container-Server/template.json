@@ -201,7 +201,7 @@
                     ]
                 },
                 "protectedSettings": {
-                    "DSCprepcommandToExecute": "[parameters('commandToExecute')]"
+                    "commandToExecute": "[parameters('DSCprepcommandToExecute')]"
                 }
             }
         }

@@ -9,7 +9,7 @@
             "value": "VM-Test004"
         },
         "virtualMachineSize": {
-            "value": "Standard_A2"
+            "value": "Standard_B2s"
         },
         "adminUsername": {
             "value": "testadmin"

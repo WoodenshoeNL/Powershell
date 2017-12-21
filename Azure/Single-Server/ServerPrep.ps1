@@ -60,5 +60,5 @@ Sleep 30
 
 
 #Log time
-Set-Content -Path "d:\DSC-test.log" -Value $(get-date)
+#Set-Content -Path "d:\DSC-test.log" -Value $(get-date)
 

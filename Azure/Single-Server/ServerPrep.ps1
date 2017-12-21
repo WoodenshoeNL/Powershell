@@ -2,6 +2,7 @@
 #Install Providers
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
+<#
 #install DSC Modules
 $requiredModules = @(
     'xPSDesiredStateConfiguration'
@@ -19,7 +20,7 @@ foreach ($module in $requiredModules) {
 
 Configuration PrepConfig {
     
-    Import-DscResource –ModuleName 'PSDesiredStateConfiguration'
+    Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     
     Node "localhost" {
         
@@ -44,6 +45,8 @@ Start-DscConfiguration -Path d:\
 
 Sleep 30
 
+#>
+
 #Download Files
 #(New-Object System.Net.WebClient).DownloadFile('https://github.com/git-for-windows/git/releases/download/v2.15.1.windows.2/Git-2.15.1.2-64-bit.exe', 'c:\install\Git-2.15.1.2-64-bit.exe')
 #(New-Object System.Net.WebClient).DownloadFile('https://download.docker.com/components/engine/windows-server/cs-1.12/docker.zip', 'c:\install\docker..zip')
@@ -57,5 +60,5 @@ Sleep 30
 
 
 #Log time
-Set-Content -Path "c:\install\DSC-test.log" -Value $(get-date)
+Set-Content -Path "d:\DSC-test.log" -Value $(get-date)
 

@@ -1,6 +1,6 @@
 #Create Directorie
 New-Item -Path c:\install -ItemType directory
-New-Item -Path c:\install\script -ItemType directory
+#New-Item -Path c:\install\script -ItemType directory
 
 #Install Providers
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force

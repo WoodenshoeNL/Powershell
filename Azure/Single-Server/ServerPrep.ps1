@@ -1,6 +1,6 @@
 
 #Install Providers
-Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+#Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
 <#
 #install DSC Modules
@@ -57,7 +57,7 @@ Sleep 30
 
 #Install Software
 
-
+Get-Date
 
 #Log time
 #Set-Content -Path "d:\DSC-test.log" -Value $(get-date)

@@ -1,8 +1,8 @@
 
 #Install Providers
-#Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
-<#
+
 #install DSC Modules
 $requiredModules = @(
     'xPSDesiredStateConfiguration'
@@ -43,9 +43,9 @@ PrepConfig -OutputPath d:\
     
 Start-DscConfiguration -Path d:\
 
-Sleep 30
+Start-Sleep 30
 
-#>
+
 
 #Download Files
 #(New-Object System.Net.WebClient).DownloadFile('https://github.com/git-for-windows/git/releases/download/v2.15.1.windows.2/Git-2.15.1.2-64-bit.exe', 'c:\install\Git-2.15.1.2-64-bit.exe')

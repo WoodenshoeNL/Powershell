@@ -48,8 +48,8 @@ Start-Sleep 30
 
 
 #Download Files
-#(New-Object System.Net.WebClient).DownloadFile('https://github.com/git-for-windows/git/releases/download/v2.15.1.windows.2/Git-2.15.1.2-64-bit.exe', 'c:\install\Git-2.15.1.2-64-bit.exe')
-#(New-Object System.Net.WebClient).DownloadFile('https://download.docker.com/components/engine/windows-server/cs-1.12/docker.zip', 'c:\install\docker..zip')
+(New-Object System.Net.WebClient).DownloadFile('https://github.com/git-for-windows/git/releases/download/v2.15.1.windows.2/Git-2.15.1.2-64-bit.exe', 'c:\install\Git-2.15.1.2-64-bit.exe')
+(New-Object System.Net.WebClient).DownloadFile('https://download.docker.com/components/engine/windows-server/cs-1.12/docker.zip', 'c:\install\docker..zip')
 
 
 #Extract Files
@@ -60,5 +60,5 @@ Start-Sleep 30
 Get-Date
 
 #Log time
-#Set-Content -Path "d:\DSC-test.log" -Value $(get-date)
+Set-Content -Path "d:\DSC-test.log" -Value $(get-date)
 

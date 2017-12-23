@@ -53,7 +53,7 @@
             "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Single-Server/ServerPrep.ps1"
         },
         "prepcommandToExecute": {
-            "value": "powershell -ExecutionPolicy Unrestricted -File DSCprep.ps1"
+            "value": "powershell -ExecutionPolicy Unrestricted -File ServerPrep.ps1"
         }
     }
 }

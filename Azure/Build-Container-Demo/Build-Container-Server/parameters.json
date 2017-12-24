@@ -56,7 +56,7 @@
             "value": "powershell -ExecutionPolicy Unrestricted -File ServerPrep.ps1"
         },
         "DSCmodulesUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/ServerPrep.ps1.zip"
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/BuildContainerDSC.ps1.zip"
         },
         "DSCconfigurationFunction": {
             "value": "BuildContainerDSC.ps1\\ContainerBuild"

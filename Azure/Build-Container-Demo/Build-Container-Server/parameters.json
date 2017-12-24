@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "virtualMachineName": {
-            "value": "VM-Test005"
+            "value": "VM-Test001"
         },
         "virtualMachineSize": {
             "value": "Standard_B2s"
@@ -18,7 +18,7 @@
             "value": "VNet01"
         },
         "networkInterfaceName": {
-            "value": "vm-test005239"
+            "value": "vm-test001239"
         },
         "networkSecurityGroupName": {
             "value": "Test-NSG"
@@ -49,17 +49,11 @@
         "storageAccountName": {
             "value": "scriptrunsa"
         },
-        "DSCprepScriptsUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/DSC/DSCprep.ps1"
+        "prepScriptsUrl": {
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Single-Server/ServerPrep.ps1"
         },
-        "DSCprepcommandToExecute": {
-            "value": "powershell -ExecutionPolicy Unrestricted -File DSCprep.ps1"
-        },
-        "ContainerScriptsUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/Install-DockerOnWS2016UsingDSC.ps1"
-        },
-        "ContainercommandToExecute": {
-            "value": "powershell -ExecutionPolicy Unrestricted -File Install-DockerOnWS2016UsingDSC.ps1"
+        "prepcommandToExecute": {
+            "value": "powershell -ExecutionPolicy Unrestricted -File ServerPrep.ps1"
         }
     }
 }

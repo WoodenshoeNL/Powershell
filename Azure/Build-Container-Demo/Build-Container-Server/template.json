@@ -208,6 +208,7 @@
                 "type": "CustomScriptExtension",
                 "typeHandlerVersion": "1.9",
                 "autoUpgradeMinorVersion": true,
+                "forceUpdateTag": "1.000",
                 "settings": {
                     "fileUris": [
                         "[parameters('prepScriptsUrl')]"
@@ -224,8 +225,7 @@
           "apiVersion": "2015-05-01-preview",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]",
-            "[concat(parameters('virtualMachineName'),'/', 'prepScript')]"
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
           ],
           "properties": {
             "publisher": "Microsoft.Powershell",

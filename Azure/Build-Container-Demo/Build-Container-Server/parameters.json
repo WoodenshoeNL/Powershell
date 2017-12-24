@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "virtualMachineName": {
-            "value": "VM-TestContainer001"
+            "value": "VM-Test001"
         },
         "virtualMachineSize": {
             "value": "Standard_B2s"
@@ -18,7 +18,7 @@
             "value": "VNet01"
         },
         "networkInterfaceName": {
-            "value": "vm-testcontainer001a"
+            "value": "vm-test001a"
         },
         "networkSecurityGroupName": {
             "value": "Test-NSG"

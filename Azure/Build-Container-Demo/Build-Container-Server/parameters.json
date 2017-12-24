@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "virtualMachineName": {
-            "value": "VM-Test001"
+            "value": "VM-TestContainer001"
         },
         "virtualMachineSize": {
             "value": "Standard_B2s"
@@ -18,7 +18,7 @@
             "value": "VNet01"
         },
         "networkInterfaceName": {
-            "value": "vm-test001239"
+            "value": "vm-testcontainer001a"
         },
         "networkSecurityGroupName": {
             "value": "Test-NSG"
@@ -50,10 +50,16 @@
             "value": "scriptrunsa"
         },
         "prepScriptsUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Single-Server/ServerPrep.ps1"
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/ServerPrep.ps1"
         },
         "prepcommandToExecute": {
             "value": "powershell -ExecutionPolicy Unrestricted -File ServerPrep.ps1"
+        },
+        "DSCmodulesUrl": {
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Build-Container-Server/ServerPrep.ps1.zip"
+        },
+        "DSCconfigurationFunction": {
+            "value": "BuildContainerDSC.ps1\\ContainerBuild"
         }
     }
 }

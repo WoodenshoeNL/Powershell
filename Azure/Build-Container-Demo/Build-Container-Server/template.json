@@ -208,7 +208,7 @@
                 "type": "CustomScriptExtension",
                 "typeHandlerVersion": "1.9",
                 "autoUpgradeMinorVersion": true,
-                "forceUpdateTag": "1.000",
+                "forceUpdateTag": "1.001",
                 "settings": {
                     "fileUris": [
                         "[parameters('prepScriptsUrl')]"
@@ -232,6 +232,7 @@
             "type": "DSC",
             "typeHandlerVersion": "2.19",
             "autoUpgradeMinorVersion": true,
+            "forceUpdateTag": "1.001",
             "settings": {
               "ModulesUrl": "[parameters('DSCmodulesUrl')]",
               "ConfigurationFunction": "[parameters('DSCconfigurationFunction')]",

@@ -208,7 +208,7 @@
                 "type": "CustomScriptExtension",
                 "typeHandlerVersion": "1.9",
                 "autoUpgradeMinorVersion": true,
-                "forceUpdateTag": "1.001",
+                "forceUpdateTag": "1.002",
                 "settings": {
                     "fileUris": [
                         "[parameters('prepScriptsUrl')]"
@@ -225,14 +225,15 @@
           "apiVersion": "2015-05-01-preview",
           "location": "[resourceGroup().location]",
           "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]",
+            "[concat(parameters('virtualMachineName'),'/', 'prepScript')]"
           ],
           "properties": {
             "publisher": "Microsoft.Powershell",
             "type": "DSC",
             "typeHandlerVersion": "2.19",
             "autoUpgradeMinorVersion": true,
-            "forceUpdateTag": "1.001",
+            "forceUpdateTag": "1.002",
             "settings": {
               "ModulesUrl": "[parameters('DSCmodulesUrl')]",
               "ConfigurationFunction": "[parameters('DSCconfigurationFunction')]",

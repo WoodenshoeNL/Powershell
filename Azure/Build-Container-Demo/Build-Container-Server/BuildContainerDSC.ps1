@@ -81,7 +81,7 @@ Configuration ContainerBuild
 
     # Start up the Docker Service and ensure it is set
     # to start up automatically.
-    xServiceSet DockerService
+    ServiceSet DockerService
     {
         Ensure      = 'Present'
         Name        = 'Docker'

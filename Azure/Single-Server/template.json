@@ -72,7 +72,8 @@
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
         "publicIPAddressType": "Dynamic",
         "publicIPAddressName": "PowershellPubIP",
-        "vmExtensionName": "CustomScriptExtension"
+        "vmExtensionName": "CustomScriptExtension",
+        "RescourceGroupName": "[resourceGroup()]"
     },
     "resources": [
         {
@@ -121,7 +122,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true,
-                        "storageUri": "[reference(resourceId('Azure-Test', 'Microsoft.Storage/storageAccounts', parameters('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
+                        "storageUri": "[reference(resourceId('TestServer', 'Microsoft.Storage/storageAccounts', parameters('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
                     }
                 }
             }

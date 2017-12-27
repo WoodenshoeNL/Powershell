@@ -31,7 +31,7 @@ param(
 
  #[Parameter(Mandatory=$True)]
  [string]
- $resourceGroupName = "Azure-Test",
+ $resourceGroupName = "TestServer",
 
  [string]
  $resourceGroupLocation,

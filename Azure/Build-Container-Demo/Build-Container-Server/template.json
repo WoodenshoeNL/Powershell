@@ -232,7 +232,7 @@
             "type": "DSC",
             "typeHandlerVersion": "2.19",
             "autoUpgradeMinorVersion": true,
-            "forceUpdateTag": "1.002",
+            "forceUpdateTag": "1.003",
             "settings": {
               "ModulesUrl": "[parameters('DSCmodulesUrl')]",
               "ConfigurationFunction": "[parameters('DSCconfigurationFunction')]",

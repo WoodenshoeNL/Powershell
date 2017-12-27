@@ -47,7 +47,7 @@ Configuration ContainerBuild
         Name      = 'Path'
         Value     = $DockerPath
         Path      = $True
-        DependsOn = '[xArchive]DockerEngineExtract'
+        DependsOn = '[Archive]DockerEngineExtract'
     }
 
       # Reboot the system to complete Containers feature setup
@@ -76,7 +76,7 @@ Configuration ContainerBuild
             }
             return $False
         }
-        DependsOn = '[xArchive]DockerEngineExtract'
+        DependsOn = '[Archive]DockerEngineExtract'
     }
 
     # Start up the Docker Service and ensure it is set

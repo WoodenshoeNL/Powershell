@@ -31,7 +31,7 @@ Configuration ContainerBuild
     #}
 
     # Extract Docker Engine zip file
-    xArchive DockerEngineExtract
+    Archive DockerEngineExtract
     {
         Destination = $ProgramFiles
         Path        = $DockerZipPath
@@ -41,7 +41,7 @@ Configuration ContainerBuild
     }
 
     # Add Docker to the Path
-    xEnvironment DockerPath
+    Environment DockerPath
     {
         Ensure    = 'Present'
         Name      = 'Path'

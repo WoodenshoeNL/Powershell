@@ -196,6 +196,7 @@
                 "type": "CustomScriptExtension",
                 "typeHandlerVersion": "1.9",
                 "autoUpgradeMinorVersion": true,
+                "forceUpdateTag": "1.001",
                 "settings": {
                     "fileUris": [
                         "[parameters('prepScriptsUrl')]"

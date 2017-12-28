@@ -36,6 +36,14 @@ Configuration PrepConfig {
             Ensure = "Present"  
             DependsOn = "[File]InstallDir"
         }
+
+        Environment DockerPath
+        {
+            Ensure    = 'Present'
+            Name      = 'Path'
+            Value     = 'C:\Program Files\Docker'
+            Path      = $True
+        }
     }
 }
     
@@ -50,15 +58,16 @@ Remove-Item d:\localhost.mof -force
 
 #Download Files
 (New-Object System.Net.WebClient).DownloadFile('https://github.com/git-for-windows/git/releases/download/v2.15.1.windows.2/Git-2.15.1.2-64-bit.exe', 'c:\install\Git-2.15.1.2-64-bit.exe')
-(New-Object System.Net.WebClient).DownloadFile('https://download.docker.com/components/engine/windows-server/cs-1.12/docker.zip', 'c:\install\docker.zip')
+(New-Object System.Net.WebClient).DownloadFile('https://download.docker.com/win/static/stable/x86_64/docker-17.09.0-ce.zip', 'c:\install\docker.zip')
 
 
 #Extract Files
-
+Expand-Archive c:\install\docker.zip -DestinationPath 'C:\Program Files'
 
 #Install Software
 
-Get-Date
+
+
 
 #Log time
 Set-Content -Path "d:\DSC-test.log" -Value $(get-date)

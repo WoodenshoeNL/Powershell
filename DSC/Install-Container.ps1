@@ -80,7 +80,7 @@ Configuration ContainerBuild
     Script DockerService
     {
         SetScript = {
-            $DockerDPath = (Join-Path -Path $Using:DockerPath -ChildPath 'dockerd.exe')
+            $DockerDPath = (Join-Path -Path $DockerPath -ChildPath 'dockerd.exe')
             & $DockerDPath @('--register-service')
         }
         GetScript = {
@@ -112,10 +112,8 @@ Configuration ContainerBuild
   }
 } 
     
-ContainerBuild -OutputPath d:\
+ContainerBuild -OutputPath d:\ -MachineName $MachineName
+    
+Start-DscConfiguration -Path d:\ -verbose
 
-Test-DscConfiguration -Path d:\ -verbose
-
-Start-DscConfiguration -Path d:\
-
-Start-Sleep 30
+Start-Sleep 3

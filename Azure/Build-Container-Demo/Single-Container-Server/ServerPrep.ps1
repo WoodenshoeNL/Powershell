@@ -6,7 +6,6 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 #install DSC Modules
 $requiredModules = @(
     'xPSDesiredStateConfiguration'
-    'xPendingReboot'
 )
 $exisingModules = Get-Module -ListAvailable
 
@@ -75,15 +74,19 @@ Remove-Item d:\localhost.mof -force
 
 
 #Extract Files
-Expand-Archive c:\install\docker.zip -DestinationPath 'C:\Program Files'
+Expand-Archive c:\install\docker.zip -DestinationPath 'C:\Program Files' -Force
 
 #Install Software
 #Git Installatie
 
 #Docker service geregistreerd
-C:\Program Files\Docker\dockerd.exe --register-service
+& "C:\Program Files\Docker\dockerd.exe" --register-service
+
+Start-Sleep 30
 
 
 #Log time
 Set-Content -Path "d:\DSC-test.log" -Value $(get-date)
 
+#Restart voor het afronden Container en Docker install
+Restart-Computer -Force

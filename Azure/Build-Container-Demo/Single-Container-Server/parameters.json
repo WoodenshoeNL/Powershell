@@ -50,7 +50,7 @@
             "value": "scriptrunsa"
         },
         "prepScriptsUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Single-Server/ServerPrep.ps1"
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/Single-Container-Server/ServerPrep.ps1"
         },
         "prepcommandToExecute": {
             "value": "powershell -ExecutionPolicy Unrestricted -File ServerPrep.ps1"

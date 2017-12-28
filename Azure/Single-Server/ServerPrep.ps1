@@ -36,14 +36,6 @@ Configuration PrepConfig {
             Ensure = "Present"  
             DependsOn = "[File]InstallDir"
         }
-
-        Environment DockerPath
-        {
-            Ensure    = 'Present'
-            Name      = 'Path'
-            Value     = 'C:\Program Files\Docker'
-            Path      = $True
-        }
     }
 }
     

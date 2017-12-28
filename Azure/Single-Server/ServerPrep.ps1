@@ -45,7 +45,8 @@ Start-DscConfiguration -Path d:\
 
 Start-Sleep 30
 
-
+#cleanup MOF file
+Remove-Item d:\localhost.mof -force
 
 #Download Files
 (New-Object System.Net.WebClient).DownloadFile('https://github.com/git-for-windows/git/releases/download/v2.15.1.windows.2/Git-2.15.1.2-64-bit.exe', 'c:\install\Git-2.15.1.2-64-bit.exe')

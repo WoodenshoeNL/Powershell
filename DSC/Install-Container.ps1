@@ -113,7 +113,9 @@ Configuration ContainerBuild
 } 
     
 ContainerBuild -OutputPath d:\
-    
+
+Test-DscConfiguration -Path d:\ -verbose
+
 Start-DscConfiguration -Path d:\
 
 Start-Sleep 30

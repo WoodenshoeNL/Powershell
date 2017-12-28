@@ -42,6 +42,12 @@ Configuration PrepConfig {
             Ensure = "Present"  
         }
 
+        File DockerPowershellDir {
+            DestinationPath = "C:\Windows\System32\WindowsPowerShell\v1.0\Modules\Docker"
+            Type = "Directory" 
+            Ensure = "Present"  
+        }
+
         Environment DockerPath
         {
             Ensure    = 'Present'

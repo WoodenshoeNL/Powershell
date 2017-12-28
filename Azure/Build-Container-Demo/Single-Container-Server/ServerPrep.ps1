@@ -78,12 +78,15 @@ Expand-Archive c:\install\docker.zip -DestinationPath 'C:\Program Files' -Force
 
 #Install Software
 #Git Installatie
+c:\install\Git-2.15.1.2-64-bit.exe /SILENT /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"
 
 #Docker service geregistreerd
 & "C:\Program Files\Docker\dockerd.exe" --register-service
 
 Start-Sleep 30
 
+#Git Clone Powershell script GitHub
+& "C:\Program Files\Git\bin\git" clone https://github.com/WoodenshoeNL/Powershell c:\install\script
 
 #Log time
 Set-Content -Path "d:\DSC-test.log" -Value $(get-date)

@@ -37,12 +37,25 @@ Configuration PrepConfig {
             DependsOn = "[File]InstallDir"
         }
 
+        File DockerDir {
+            DestinationPath = "C:\Program Files\Docker"
+            Type = "Directory" 
+            Ensure = "Present"  
+        }
+
         Environment DockerPath
         {
             Ensure    = 'Present'
             Name      = 'Path'
             Value     = 'C:\Program Files\Docker'
             Path      = $True
+            DependsOn = "[File]DockerDir"
+        }
+
+        WindowsFeature ContainerInstall
+        {
+            Ensure = "Present"
+            Name   = "Containers"
         }
     }
 }
@@ -65,8 +78,10 @@ Remove-Item d:\localhost.mof -force
 Expand-Archive c:\install\docker.zip -DestinationPath 'C:\Program Files'
 
 #Install Software
+#Git Installatie
 
-
+#Docker service geregistreerd
+C:\Program Files\Docker\dockerd.exe --register-service
 
 
 #Log time

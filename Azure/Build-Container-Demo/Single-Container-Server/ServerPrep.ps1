@@ -42,23 +42,14 @@ Configuration PrepConfig {
             Ensure = "Present"  
         }
 
-        Environment DockerPath
+        Environment addPath
         {
             Ensure    = 'Present'
             Name      = 'Path'
-            Value     = 'C:\Program Files\Docker'
+            Value     = '%programfiles%\Docker;%programfiles%\Git\bin\git'
             Path      = $True
             DependsOn = "[File]DockerDir"
         }
-
-        Environment GitPath
-        {
-            Ensure    = 'Present'
-            Name      = 'Path'
-            Value     = 'C:\Program Files\Git\bin\git'
-            Path      = $True
-        }
-        
 
         WindowsFeature ContainerInstall
         {

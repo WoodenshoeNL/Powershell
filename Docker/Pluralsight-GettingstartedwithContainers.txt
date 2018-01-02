@@ -1,0 +1,11 @@
+
+#module 
+docker pull mongo:windowsservercore
+
+docker run mongo:windowsservercore
+
+docker ps
+
+docker exec -it 27 mongo
+
+

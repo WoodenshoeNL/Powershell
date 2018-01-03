@@ -9,3 +9,6 @@ docker ps
 docker exec -it 27 mongo
 
 
+docker run microsoft/iis:nanoserver -p 81:80 -d --name iis
+
+docker pull microsoft/windowsservercore

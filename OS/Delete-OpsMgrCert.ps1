@@ -4,3 +4,4 @@ Remove-ItemProperty -Name 'ChannelCertificateSerialNumber' -Path 'HKLM:\\SOFTWAR
 
 #Delete Cert
 
+Get-ChildItem Cert:\LocalMachine\My | Where-Object { $_.Issuer -match 'OpsMgrCA' } | Remove-Item

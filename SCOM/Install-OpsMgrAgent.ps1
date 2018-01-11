@@ -35,8 +35,7 @@ if(Test-Path "C:\Install\Agent_2016\Cert\$hostname.pfx" )
     Import-PfxCertificate -FilePath "C:\Install\Agent_2016\Cert\$hostname.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $mypwd.Password 
 }
 
-#wacht
-Read-Host "Press Enter"
+#
 
 #Start CertImport
-& "C:\Install\Agent_2016\SupportTools\AMD64\MOMCertImport.exe"
+& "C:\Install\Agent_2016\SupportTools\AMD64\MOMCertImport.exe /subjecname $hostname"

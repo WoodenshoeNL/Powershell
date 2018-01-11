@@ -57,9 +57,9 @@ Remove-Item d:\localhost.mof -force
 #Expand-Archive c:\install\docker.zip -DestinationPath 'C:\Program Files'
 
 #Install Software
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-. { Invoke-WebRequest -useb http://boxstarter.org/bootstrapper.ps1 } | Invoke-Expression 
-get-boxstarter -Force
+#Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+#. { Invoke-WebRequest -useb http://boxstarter.org/bootstrapper.ps1 } | Invoke-Expression 
+#get-boxstarter -Force
 
 
 #Log time

@@ -8,8 +8,6 @@ get-boxstarter -Force
 choco feature enable --name=allowGlobalConfirmation
 
 Import-Module Boxstarter.Chocolatey
-Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force
-
 
 #start Boxstarter
 

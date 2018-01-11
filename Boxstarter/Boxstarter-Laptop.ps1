@@ -8,6 +8,7 @@ get-boxstarter -Force
 choco feature enable --name=allowGlobalConfirmation
 
 Import-Module Boxstarter.Chocolatey
+Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force
 
 
 #start Boxstarter
@@ -28,7 +29,7 @@ cinst visualstudiocode
 cinst googledrive
 cinst evernote
 cinst vlc
-cinst f.lux
+cinst f.lux --ignorechecksum
 cinst gitkraken
 cinst passwordsafe
 cinst spotify
@@ -41,9 +42,3 @@ cinst powershell-core
 cinst git
 cinst microsoft-teams
 
-Install-ChocolateyPinnedTaskBarItem "$($Boxstarter.programFiles86)\Google\Chrome\Application\chrome.exe"
-Install-ChocolateyPinnedTaskBarItem "$($Boxstarter.programFiles)\Mozilla Firefox\firefox.exe"
-Install-ChocolateyPinnedTaskBarItem "$($Boxstarter.programFiles86)\Evernote\Evernote\Evernote.exe"
-Install-ChocolateyPinnedTaskBarItem "$($Boxstarter.programFiles)\Microsoft VS Code\Code.exe"
-Install-ChocolateyPinnedTaskBarItem "%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe"
-Install-ChocolateyPinnedTaskBarItem "$($Boxstarter.programFiles)\PowerShell\6.0.0\pwsh.exe"

@@ -36,6 +36,15 @@ Configuration PrepConfig {
             Ensure = "Present"  
             DependsOn = "[File]InstallDir"
         }
+
+        Environment addPath
+        {
+            Ensure    = 'Present'
+            Name      = 'Path'
+            Value     = '%programfiles%\Git\bin\git'
+            Path      = $True
+            DependsOn = "[File]DockerDir"
+        }
     }
 }
     
@@ -50,16 +59,13 @@ Remove-Item d:\localhost.mof -force
 
 #Download Files
 (New-Object System.Net.WebClient).DownloadFile('https://github.com/git-for-windows/git/releases/download/v2.15.1.windows.2/Git-2.15.1.2-64-bit.exe', 'c:\install\Git-2.15.1.2-64-bit.exe')
-#(New-Object System.Net.WebClient).DownloadFile('https://download.docker.com/win/static/stable/x86_64/docker-17.09.0-ce.zip', 'c:\install\docker.zip')
 
 
-#Extract Files
-#Expand-Archive c:\install\docker.zip -DestinationPath 'C:\Program Files'
+#Git Installatie
+c:\install\Git-2.15.1.2-64-bit.exe /SILENT /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"
 
-#Install Software
-#Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-#. { Invoke-WebRequest -useb http://boxstarter.org/bootstrapper.ps1 } | Invoke-Expression 
-#get-boxstarter -Force
+#Git Clone Powershell script GitHub
+& "C:\Program Files\Git\bin\git" clone https://github.com/WoodenshoeNL/Powershell c:\install\script
 
 
 #Log time

@@ -30,3 +30,9 @@ cinst gitkraken
 cinst passwordsafe
 cinst spotify
 cinst sumatrapdf
+cinst autohotkey
+cinst greenshot
+cinst windowsazurepowershell
+cinst pester
+cinst powershell-core
+cinst git

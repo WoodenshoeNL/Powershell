@@ -1,4 +1,6 @@
 
+$hostname = $([System.Net.Dns]::GetHostByName(($env:computerName))).hostname
+
 #copy agent files
 $remotepath = "\\tsclient\C\Operations Manager\Agent_2016"
 $path = "C:\Install"
@@ -21,21 +23,19 @@ Import-Certificate -FilePath $certpath -CertStoreLocation Cert:\LocalMachine\Roo
 
 #Add Servers to hostfile
 
-Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "#"
-Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "10.212.8.26     mgmt-opm31.management.int"
-Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "10.212.8.27     mgmt-opm32.management.int"
-
+if(-not (Resolve-DnsName mgmt-opm31.management.int -ea ignore)) 
+{
+    Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "#"
+    Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "10.212.8.26     mgmt-opm31.management.int"
+    Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "10.212.8.27     mgmt-opm32.management.int"
+}
 
 #Install Computer Cert
-$hostname = $([System.Net.Dns]::GetHostByName(($env:computerName))).hostname
-
 if(Test-Path "C:\Install\Agent_2016\Cert\$hostname.pfx" )
 {
     $mypwd = Get-Credential -UserName 'Enter password below' -Message 'Enter password below'
     Import-PfxCertificate -FilePath "C:\Install\Agent_2016\Cert\$hostname.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $mypwd.Password 
 }
-
-#
 
 #Start CertImport
 & "C:\Install\Agent_2016\SupportTools\AMD64\MOMCertImport.exe /subjecname $hostname"

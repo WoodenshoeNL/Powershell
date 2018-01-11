@@ -34,8 +34,14 @@ Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "#"
 Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "10.212.8.203     mgmt-opm21.management.int"
 Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "10.212.8.204     mgmt-opm22.management.int"
 
-#Start Cert MMC Console
-& "C:\Install\Agent_2016\Cert.msc"
+#Install Computer Cert
+$hostname = $([System.Net.Dns]::GetHostByName(($env:computerName))).hostname
+
+if(Test-Path "C:\Install\Agent_2016\Cert\$hostname.pfx" )
+{
+    $mypwd = Get-Credential -UserName 'Enter password below' -Message 'Enter password below'
+    Import-PfxCertificate -FilePath "C:\Install\Agent_2016\Cert\$hostname.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $mypwd.Password 
+}
 
 #wacht
 Read-Host "Press Enter"

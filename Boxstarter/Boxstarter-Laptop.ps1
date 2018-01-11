@@ -17,12 +17,12 @@ Set-TaskbarOptions -Lock -Dock Bottom
 
 cinst Microsoft-Hyper-V-All -source windowsFeatures
 
-cinst chocolatey
+#cinst chocolatey
 cinst notepadplusplus
 cinst 7zip
 cinst GoogleChrome
 cinst Firefox
-cinst dotnet3.5
+#cinst dotnet3.5
 cinst visualstudiocode
 cinst googledrive
 cinst evernote
@@ -34,9 +34,9 @@ cinst spotify
 cinst sumatrapdf
 cinst autohotkey
 cinst greenshot
-cinst windowsazurepowershell
 cinst pester
 cinst powershell-core
 cinst git
 cinst microsoft-teams
+cinst windowsazurepowershell
 

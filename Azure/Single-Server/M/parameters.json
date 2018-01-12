@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "virtualMachineName": {
+            "value": "VM-Milou001"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2s"
+        },
+        "adminUsername": {
+            "value": "adm_milou"
+        },
+        "virtualNetworkName": {
+            "value": "VNet01"
+        },
+        "networkInterfaceName": {
+            "value": "vm-Milou00123"
+        },
+        "networkSecurityGroupName": {
+            "value": "Test-NSG"
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/Azure-Test/providers/Microsoft.KeyVault/vaults/ScriptKeyVault"
+                },
+                "secretName": "admmilou"
+            }
+        },
+        "diagnosticsStorageAccountName": {
+            "value": "azuretestdiag002"
+        },
+        "diagnosticsStorageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "diagnosticsStorageAccountId": {
+            "value": "Microsoft.Storage/storageAccounts/azuretestdiag001"
+        },
+        "subnetName": {
+            "value": "Subnet1"
+        },
+        "storageAccountType": {
+            "value": "Standard_LRS"
+        },
+        "storageAccountName": {
+            "value": "scriptrunsamilou"
+        },
+        "prepScriptsUrl": {
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Single-Server/ServerPrep.ps1"
+        },
+        "prepcommandToExecute": {
+            "value": "powershell -ExecutionPolicy Unrestricted -File ServerPrep.ps1"
+        }
+    }
+}

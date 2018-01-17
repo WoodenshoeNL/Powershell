@@ -26,7 +26,7 @@
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/Azure-Test/providers/Microsoft.KeyVault/vaults/ScriptKeyVault"
+                    "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/Milou/providers/Microsoft.KeyVault/vaults/MilouKeyVault"
                 },
                 "secretName": "admmilou"
             }
@@ -50,7 +50,7 @@
             "value": "scriptrunsamilou"
         },
         "prepScriptsUrl": {
-            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Single-Server/ServerPrep.ps1"
+            "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Single-Server/Milou/ServerPrep.ps1"
         },
         "prepcommandToExecute": {
             "value": "powershell -ExecutionPolicy Unrestricted -File ServerPrep.ps1"

@@ -1,9 +1,9 @@
 
 
-$ResourceGroupName = "Azure-Test"
+$ResourceGroupName = "Milou"
 $Location = "WestEurope"
 
-$keyVaultName = "ScriptKeyVault"
+$keyVaultName = "MilouKeyVault"
 
 $testUser = "admmilou"
 $testPassword = "9fA884xBBv8Uw7oC7Fmz"

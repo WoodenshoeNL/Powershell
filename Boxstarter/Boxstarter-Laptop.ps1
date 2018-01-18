@@ -39,4 +39,5 @@ cinst powershell-core
 cinst git
 cinst microsoft-teams
 cinst windowsazurepowershell
+cinst steam
 

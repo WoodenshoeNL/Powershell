@@ -10,8 +10,12 @@ $VerbosePreference = "Continue"
 #Add-AzureRmAccount -ServicePrincipal -TenantId $servicePrincipalConnection.TenantId -ApplicationId $servicePrincipalConnection.ApplicationId -CertificateThumbprint $servicePrincipalConnection.CertificateThumbprint
 
 
-$cred = get-automationpscredentials 
+$cred = Get-AzureAutomationCredential -Name "MyCred"
 
+$subName = Get-AzureAutomationVariable -Name "subName"
 
+Add-AzureRmAccount -Credential $cred
+
+Select-AzureSubscription -SubscriptionName $subName 
 
 Get-AzureRmVM

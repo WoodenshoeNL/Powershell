@@ -38,6 +38,6 @@ cinst pester
 cinst powershell-core
 cinst git
 cinst microsoft-teams
-cinst windowsazurepowershell
+#cinst windowsazurepowershell
 cinst steam
 

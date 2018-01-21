@@ -1,7 +1,7 @@
 
 
-$ResourceGroupName = "Azure-Test"
+$ResourceGroupName = "Script"
 $Location = "WestEurope"
 
 
-New-AzureRmAutomationAccount -Name "Test-AA" -ResourceGroupName $ResourceGroupName -Location $Location
+New-AzureRmAutomationAccount -Name "Script-AA" -ResourceGroupName $ResourceGroupName -Location $Location

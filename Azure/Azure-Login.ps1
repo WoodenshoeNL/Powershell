@@ -1,6 +1,6 @@
-﻿Import-Module AzureRM
-Import-Module Azure
-Import-Module AzureAD
+﻿#Import-Module AzureRM
+#Import-Module Azure
+#Import-Module AzureAD
 
 
 Login-AzureRmAccount

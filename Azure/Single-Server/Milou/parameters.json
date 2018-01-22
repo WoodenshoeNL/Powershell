@@ -15,13 +15,13 @@
             "value": "adm_milou"
         },
         "virtualNetworkName": {
-            "value": "VNet01"
+            "value": "VNetMilou"
         },
         "networkInterfaceName": {
             "value": "vm-Milou00123"
         },
         "networkSecurityGroupName": {
-            "value": "Test-NSG"
+            "value": "Milou-NSG"
         },
         "adminPassword": {
             "reference": {
@@ -41,7 +41,7 @@
             "value": "Microsoft.Storage/storageAccounts/azuretestdiag001"
         },
         "subnetName": {
-            "value": "Subnet1"
+            "value": "SubnetMilou"
         },
         "storageAccountType": {
             "value": "Standard_LRS"

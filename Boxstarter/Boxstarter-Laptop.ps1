@@ -24,7 +24,7 @@ cinst GoogleChrome
 cinst Firefox
 #cinst dotnet3.5
 cinst visualstudiocode
-cinst googledrive
+cinst google-backup-and-sync
 cinst evernote
 cinst vlc
 cinst f.lux --ignorechecksum

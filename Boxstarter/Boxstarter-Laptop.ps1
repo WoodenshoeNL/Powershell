@@ -15,14 +15,12 @@ Set-WindowsExplorerOptions -EnableShowHiddenFilesFoldersDrives -EnableShowProtec
 
 Set-TaskbarOptions -Lock -Dock Bottom
 
-cinst Microsoft-Hyper-V-All -source windowsFeatures
+#cinst Microsoft-Hyper-V-All -source windowsFeatures
 
-#cinst chocolatey
 cinst notepadplusplus
 cinst 7zip
 cinst GoogleChrome
 cinst Firefox
-#cinst dotnet3.5
 cinst visualstudiocode
 cinst google-backup-and-sync
 cinst evernote
@@ -38,6 +36,9 @@ cinst pester
 cinst powershell-core
 cinst git
 cinst microsoft-teams
-#cinst windowsazurepowershell
 cinst steam
 
+
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Install-Module AzureRM -Force -AllowClobber
+Install-Module AzureAD -Force -AllowClobber

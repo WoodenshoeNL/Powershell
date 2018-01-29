@@ -1,7 +1,7 @@
 
-$ResourceGroupName = "Azure-Test"
+$ResourceGroupName = "Script"
 $Location = "WestEurope"
-$AutomationAccount = "Test-AA"
+$AutomationAccount = "Script-AA"
 
 
 $RunbookName = "Show-VMstatus"

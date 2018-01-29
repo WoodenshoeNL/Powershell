@@ -4,5 +4,8 @@ $resourceGroupLocation = "westeurope"
 $AutomationAccount = "Script-AA"
 
 
-$Credential = Get-Credential -Message 'Enter AA Runas Credentials'
-New-AzureRmAutomationCredential -Name "SAscript" -Description "AA Runas account" -Value $Credential -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccount
+$Credential.Password
+
+$Cred = Get-Credential -Message 'Enter AA Runas Credentials'
+$Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $cred.UserName, $Cred.Password
+New-AzureRmAutomationCredential -Name "SAscript1" -Description "AA Runas account" -Value $Credential -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccount

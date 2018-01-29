@@ -1,11 +1,11 @@
-$resourceGroupName = "Script"
-$resourceGroupLocation = "westeurope"
-$AutomationAccount = "Script-AA"
+#$resourceGroupName = "Script"
+#$resourceGroupLocation = "westeurope"
+#$AutomationAccount = "Script-AA"
 
-$VerbosePreference = "Continue"
+#$VerbosePreference = "Continue"
 
 
-$Cred = Get-AutomationPSCredential -Name "SAscript" -ResourceGroupName $resourceGroupName -AutomationAccountName $AutomationAccount
+$Cred = Get-AutomationPSCredential -Name "SAscript"
 
 
 Add-AzureRmAccount -Credential $cred

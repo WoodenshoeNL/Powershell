@@ -3,6 +3,12 @@ $AutomationAccount = "Script-AA"
 
 $VerbosePreference = "Continue"
 
+
+
+
+
+
+
 #Write-Verbose "[*] Logging in to Azure"
 
 #$connectionName = "AzureRunAsConnection"

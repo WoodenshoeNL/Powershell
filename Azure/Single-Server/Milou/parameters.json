@@ -32,13 +32,13 @@
             }
         },
         "diagnosticsStorageAccountName": {
-            "value": "azuretestdiag002"
+            "value": "azuretestdiag002M"
         },
         "diagnosticsStorageAccountType": {
             "value": "Standard_LRS"
         },
         "diagnosticsStorageAccountId": {
-            "value": "Microsoft.Storage/storageAccounts/azuretestdiag001"
+            "value": "Microsoft.Storage/storageAccounts/azuretestdiag001M"
         },
         "subnetName": {
             "value": "SubnetMilou"

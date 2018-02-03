@@ -5,11 +5,12 @@
 #$VerbosePreference = "Continue"
 
 
-$Cred = Get-AutomationPSCredential -Name "SAscript"
+$Cred = Get-AutomationPSCredential -Name "admin"
 
+$subName = Get-AutomationVariable -Name 'Subscription'
 
-Add-AzureRmAccount -Credential $cred
+Add-AzureRmAccount -Credential $cred 
 
-#Select-AzureSubscription -SubscriptionName $subName 
+Select-AzureSubscription -SubscriptionName $subName 
 
 Get-AzureRmVM

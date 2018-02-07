@@ -1,3 +1,8 @@
+$ResourceGroupName = "Milou"
+$Location = "WestEurope"
+$AutomationAccount = "Milou-AA"
+$VM = "VM-Milou001"
+
 $connectionName = "AzureRunAsConnection"
 try
 {
@@ -22,4 +27,4 @@ catch {
     }
 }
 
-Get-AzureRmVM
+Start-AzureRmVM -ResourceGroupName $ResourceGroupName -Name $VM

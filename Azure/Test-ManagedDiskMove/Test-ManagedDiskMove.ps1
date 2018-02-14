@@ -1,12 +1,10 @@
 
 Write-Host "[^] Script Start - $(Get-Date)" -ForegroundColor "Darkgreen"
 #####Set Variable
-$subscriptionId = "b2f81635-ee4b-4cac-8610-3569594a6484"
 $resourceGroupName = "TestManagedDisk"
 $resourceGroupName2 = "TestManagedDisk2"
 $NetworkresourceGroupName = "Azure-Test"
 $Location = "westeurope"
-$deploymentName = "Test-ManagedDiskDeployment"
 $templateFilePath = "template.json"
 $parametersFilePath = "parameters.json"
 $VMname = "VM-DiskTest001"

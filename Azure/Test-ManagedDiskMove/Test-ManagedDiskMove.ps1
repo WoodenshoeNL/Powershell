@@ -11,6 +11,8 @@ $NetworkresourceGroupName = "Azure-Test"
 $BootDiagResourceGroupName = "test"
 $BootDiagAccount = "test"
 $virtualNetworkName = "VNet01"
+$NetworkSecurityGroup = "Test-NSG"
+$NetworkSecurityGroupRG = "Azure-Test"
 
 $Location = "westeurope"
 $storageType = "PremiumLRS"
@@ -54,7 +56,8 @@ Write-Host "[->] Create VM($virtualMachineName) in Resource Group: $resourceGrou
 $VirtualMachine = New-AzureRmVMConfig -VMName $virtualMachineName -VMSize $($virtualMachineSize).ToString()
 $VirtualMachine = Set-AzureRmVMOSDisk -VM $VirtualMachine -ManagedDiskId $disk.Id -CreateOption Attach -Windows
 $vnet = Get-AzureRmVirtualNetwork -Name $virtualNetworkName -ResourceGroupName $NetworkresourceGroupName
-$nic = New-AzureRmNetworkInterface -Name ($VirtualMachineName.ToLower()+'_nic') -ResourceGroupName $resourceGroupName2 -Location $snapshot.Location -SubnetId $vnet.Subnets[0].Id #-PublicIpAddressId $publicIp.Id
+$NSG = Get-AzureRmNetworkSecurityGroup -Name  $NetworkSecurityGroup -ResourceGroupName $NetworkSecurityGroupRG
+$nic = New-AzureRmNetworkInterface -Name ($VirtualMachineName.ToLower()+'_nic') -ResourceGroupName $resourceGroupName2 -Location $snapshot.Location -SubnetId $vnet.Subnets[0].Id -NetworkSecurityGroup $NSG
 $VirtualMachine = Add-AzureRmVMNetworkInterface -VM $VirtualMachine -Id $nic.Id
 New-AzureRmVM -VM $VirtualMachine -ResourceGroupName $resourceGroupName2 -Location $snapshot.Location
 

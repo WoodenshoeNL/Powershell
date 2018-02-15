@@ -1,16 +1,22 @@
 
 Write-Host "[^] Script Start - $(Get-Date)" -ForegroundColor "Darkgreen"
 #####Set Variable
+$VMname = "VM-DiskTest001"
+$snapshotName = "ManagedDiskSnapshot_$VMname"
+$virtualMachineSize = "Standard_D2s_v3"
+
 $resourceGroupName = "TestManagedDisk"
 $resourceGroupName2 = "TestManagedDisk2"
 $NetworkresourceGroupName = "Azure-Test"
+$BootDiagResourceGroupName = "test"
+$BootDiagAccount = "test"
+$virtualNetworkName = "VNet01"
+
 $Location = "westeurope"
+$storageType = "PremiumLRS"
+
 $templateFilePath = "template.json"
 $parametersFilePath = "parameters.json"
-$VMname = "VM-DiskTest001"
-$virtualNetworkName = "VNet01"
-$storageType = "PremiumLRS"
-$virtualMachineSize = "Standard_D2s_v3"
 $ErrorActionPreference = "Stop"
 
 #Login-AzureRmAccount;
@@ -32,14 +38,13 @@ Stop-AzureRmVM -ResourceGroupName $resourceGroupName -Name $VMname -Force
 Write-Host "[->] Create Snapshot" -ForegroundColor "DarkGreen"
 $VM = Get-AzureRmVM -ResourceGroupName $resourceGroupName -Name $VMname
 $disk = Get-AzureRmDisk -ResourceGroupName $resourceGroupName | Where-Object{$_.ManagedBy -eq $VM.Id}
-$snapshotName = 'ManagedDiskSnapshot'
 $snapshotConfig =  New-AzureRmSnapshotConfig -SourceUri $disk.Id -CreateOption Copy -Location $location -AccountType $storageType
 $snapshot = New-AzureRmSnapshot -Snapshot $snapshotConfig -SnapshotName $snapshotName -ResourceGroupName $resourceGroupName
 
 #####Create new managed disks from snapshots in the new Resource Group
 #$snapshot = Get-AzureRmSnapshot -ResourceGroupName $resourceGroupName -SnapshotName $snapshotName 
 Write-Host "[->] Create Managed Disk in Resource Group: $resourceGroupName2" -ForegroundColor "DarkGreen"
-$osDiskName = $disk.name #+ "_n"
+$osDiskName = $disk.name
 $diskConfig = New-AzureRmDiskConfig -AccountType $storageType -Location $snapshot.Location -SourceResourceId $snapshot.Id -CreateOption Copy
 $disk = New-AzureRmDisk -Disk $diskConfig -ResourceGroupName $resourceGroupName2 -DiskName $osDiskName
 
@@ -56,7 +61,7 @@ New-AzureRmVM -VM $VirtualMachine -ResourceGroupName $resourceGroupName2 -Locati
 #####Set Boot Diagnostics Account
 Write-Host "[->] Set Boot Diagnostics Account" -ForegroundColor "DarkGreen"
 $VM = Get-AzureRmVM -ResourceGroupName $resourceGroupName -Name $virtualMachineName
-Set-AzureRmVMBootDiagnostics -vm $VM -Enable -ResourceGroupName "TestServer" -StorageAccountName "azuretestdiag001"
+Set-AzureRmVMBootDiagnostics -vm $VM -Enable -ResourceGroupName $BootDiagResourceGroupName -StorageAccountName $BootDiagAccount
 
 Write-Host "[$] Script Finished - $(Get-Date)" -ForegroundColor "Darkgreen"
 

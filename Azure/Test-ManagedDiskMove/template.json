@@ -133,6 +133,7 @@
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
                             },
+                            "PrivateIpAddress": "10.77.1.200",
                             "privateIPAllocationMethod": "Dynamic"
                         }
                     }

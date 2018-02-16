@@ -8,8 +8,8 @@ $virtualMachineSize = "Standard_D2s_v3"
 $resourceGroupName = "TestManagedDisk"
 $resourceGroupName2 = "TestManagedDisk2"
 $NetworkresourceGroupName = "Azure-Test"
-$BootDiagResourceGroupName = "test"
-$BootDiagAccount = "test"
+$BootDiagResourceGroupName = "testserver"
+$BootDiagAccount = "azuretestdiag001"
 $virtualNetworkName = "VNet01"
 $NetworkSecurityGroup = "Test-NSG"
 $NetworkSecurityGroupRG = "Azure-Test"
@@ -43,6 +43,24 @@ $disk = Get-AzureRmDisk -ResourceGroupName $resourceGroupName | Where-Object{$_.
 $snapshotConfig =  New-AzureRmSnapshotConfig -SourceUri $disk.Id -CreateOption Copy -Location $location -AccountType $storageType
 $snapshot = New-AzureRmSnapshot -Snapshot $snapshotConfig -SnapshotName $snapshotName -ResourceGroupName $resourceGroupName
 
+#####Get IP & DNS
+Write-Host "[->] Get IP" -ForegroundColor "DarkGreen"
+$nics = get-azurermnetworkinterface
+foreach($nic in $nics)
+{
+    if($nic.virtualmachine.Id -match $VMname){
+        $IPaddress =  $nic.IpConfigurations | select-object -ExpandProperty PrivateIpAddress
+        $DNSservers = $nic.DnsSettings | select-object -ExpandProperty DnsServers
+    }
+}  
+Write-Host "[==] IP = $IPaddress" -ForegroundColor "DarkGreen"
+
+#####Delete VM
+Write-Host "[->] Remove VM" -ForegroundColor "DarkGreen"
+Remove-AzureRmVM -ResourceGroupName $resourceGroupName -Name $VMname -Force
+#Get-AzureRmDisk -ResourceGroupName $resourceGroupName | Where-Object{$_.ManagedBy -eq $VM.Id} | Remove-AzureRmDisk
+Remove-AzureRmNetworkInterface -ResourceGroupName $resourceGroupName -Name $nic.Name -Force
+
 #####Create new managed disks from snapshots in the new Resource Group
 #$snapshot = Get-AzureRmSnapshot -ResourceGroupName $resourceGroupName -SnapshotName $snapshotName 
 Write-Host "[->] Create Managed Disk in Resource Group: $resourceGroupName2" -ForegroundColor "DarkGreen"
@@ -57,14 +75,10 @@ $VirtualMachine = New-AzureRmVMConfig -VMName $virtualMachineName -VMSize $($vir
 $VirtualMachine = Set-AzureRmVMOSDisk -VM $VirtualMachine -ManagedDiskId $disk.Id -CreateOption Attach -Windows
 $vnet = Get-AzureRmVirtualNetwork -Name $virtualNetworkName -ResourceGroupName $NetworkresourceGroupName
 $NSG = Get-AzureRmNetworkSecurityGroup -Name  $NetworkSecurityGroup -ResourceGroupName $NetworkSecurityGroupRG
-$nic = New-AzureRmNetworkInterface -Name ($VirtualMachineName.ToLower()+'_nic') -ResourceGroupName $resourceGroupName2 -Location $snapshot.Location -SubnetId $vnet.Subnets[0].Id -NetworkSecurityGroupId $NSG.id
+$nic = New-AzureRmNetworkInterface -Name ($VirtualMachineName.ToLower()+'_nic') -ResourceGroupName $resourceGroupName2 -Location $snapshot.Location -SubnetId $vnet.Subnets[0].Id -NetworkSecurityGroupId $NSG.id -PrivateIpAddress $IPaddress -DnsServer $DNSservers
 $VirtualMachine = Add-AzureRmVMNetworkInterface -VM $VirtualMachine -Id $nic.Id
+Set-AzureRmVMBootDiagnostics -vm $VirtualMachine -Enable -ResourceGroupName $BootDiagResourceGroupName -StorageAccountName $BootDiagAccount
 New-AzureRmVM -VM $VirtualMachine -ResourceGroupName $resourceGroupName2 -Location $snapshot.Location
-
-#####Set Boot Diagnostics Account
-Write-Host "[->] Set Boot Diagnostics Account" -ForegroundColor "DarkGreen"
-$VM = Get-AzureRmVM -ResourceGroupName $resourceGroupName -Name $virtualMachineName
-Set-AzureRmVMBootDiagnostics -vm $VM -Enable -ResourceGroupName $BootDiagResourceGroupName -StorageAccountName $BootDiagAccount
 
 Write-Host "[$] Script Finished - $(Get-Date)" -ForegroundColor "Darkgreen"
 

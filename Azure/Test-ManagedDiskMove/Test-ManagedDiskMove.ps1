@@ -51,6 +51,7 @@ foreach($nic in $nics)
     if($nic.virtualmachine.Id -match $VMname){
         $IPaddress =  $nic.IpConfigurations | select-object -ExpandProperty PrivateIpAddress
         $DNSservers = $nic.DnsSettings | select-object -ExpandProperty DnsServers
+        $nic2 = $nic
     }
 }  
 Write-Host "[==] IP = $IPaddress" -ForegroundColor "DarkGreen"
@@ -59,7 +60,7 @@ Write-Host "[==] IP = $IPaddress" -ForegroundColor "DarkGreen"
 Write-Host "[->] Remove VM" -ForegroundColor "DarkGreen"
 Remove-AzureRmVM -ResourceGroupName $resourceGroupName -Name $VMname -Force
 #Get-AzureRmDisk -ResourceGroupName $resourceGroupName | Where-Object{$_.ManagedBy -eq $VM.Id} | Remove-AzureRmDisk
-Remove-AzureRmNetworkInterface -ResourceGroupName $resourceGroupName -Name $nic.Name -Force
+Remove-AzureRmNetworkInterface -ResourceGroupName $resourceGroupName -Name $nic2.Name -Force
 
 #####Create new managed disks from snapshots in the new Resource Group
 #$snapshot = Get-AzureRmSnapshot -ResourceGroupName $resourceGroupName -SnapshotName $snapshotName 

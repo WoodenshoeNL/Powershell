@@ -32,13 +32,13 @@
             }
         },
         "diagnosticsStorageAccountName": {
-            "value": "azuretestdiag001"
+            "value": "containerdiag001"
         },
         "diagnosticsStorageAccountType": {
             "value": "Standard_LRS"
         },
         "diagnosticsStorageAccountId": {
-            "value": "Microsoft.Storage/storageAccounts/azuretestdiag001"
+            "value": "Microsoft.Storage/storageAccounts/containerdiag001"
         },
         "subnetName": {
             "value": "Subnet1"
@@ -47,7 +47,7 @@
             "value": "Standard_LRS"
         },
         "storageAccountName": {
-            "value": "scriptrunsa"
+            "value": "scriptcontainerrunsa"
         },
         "prepScriptsUrl": {
             "value": "https://raw.githubusercontent.com/WoodenshoeNL/Powershell/master/Azure/Build-Container-Demo/W.Container/ServerPrep.ps1"

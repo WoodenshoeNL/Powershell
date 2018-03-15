@@ -1,0 +1,2 @@
+server1.local
+server2.local

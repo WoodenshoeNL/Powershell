@@ -1,0 +1,344 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "environment": {
+            "type": "string",
+            "metadata": {
+                "description": "The environment that you wish to create."
+            }
+        },
+        "mySqlPassword": {
+            "type": "securestring",
+            "minLength": 1
+        },
+        "sshKey": {
+            "type": "securestring",
+            "minLength": 1
+        }
+    },
+    "variables": {
+        "virtualMachineName": "[concat('website-', parameters('environment'), '-srv')]",
+        "networkInterfaceName": "[concat('website-', parameters('environment'), '-srv-nic' )]",
+        "virtualNetworkName": "[concat('website-', parameters('environment'), '-vnet')]",
+        "dataDisk": "[concat('website-', parameters('environment'), '-srv-datadisk01')]",
+        "osDisk": "[concat('website-', parameters('environment'), '-srv-osdisk')]",
+        "storageAccountName": "[concat('website', parameters('environment'))]",
+        "diagnosticsStorageAccountName": "[concat('website', parameters('environment'), 'diag')]",
+        "publicIpAddressName": "[concat('website-', parameters('environment'), '-srv-pip')]",
+        "networkSecurityGroupName": "[concat('website-', parameters('environment'), '-nsg')]",
+        "mySqlServerName": "[concat('website-', parameters('environment'))]",
+        "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "vnetId": "[concat(resourceGroup().id,'/providers/Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+        "addressPrefix": "10.0.0.0/24",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/default')]",
+        "vmSize": "Standard_D2s_v3"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "apiVersion": "2017-10-01",
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "properties": {
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "keySource": "Microsoft.Storage",
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DBforMySQL/servers",
+            "apiVersion": "2017-12-01-preview",
+            "kind": "",
+            "location": "[resourceGroup().location]",
+            "name": "[variables('mySqlServerName')]",
+            "properties": {
+                "version": "5.7",
+                "administratorLogin": "admin",
+                "administratorLoginPassword": "[parameters('mySqlPassword')]",
+                "storageProfile": {
+                    "storageMB": 119808,
+                    "backupRetentionDays": 35,
+                    "geoRedundantBackup": "Disabled"
+                }
+            },
+            "sku": {
+                "name": "GP_Gen5_2",
+                "tier": "GeneralPurpose",
+                "capacity": 2,
+                "size": 119808,
+                "family": "Gen5"
+            }
+        },
+        {
+            "name": "[concat(variables('mySqlServerName'), '/accessForAzure')]",
+            "type": "Microsoft.DBforMySQL/servers/firewallRules",
+            "apiVersion": "2017-04-30-preview",
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/servers/', variables('mySqlServerName'))]"
+            ]
+        },
+        {
+            "name": "[concat(variables('mySqlServerName'), '/beheer')]",
+            "type": "Microsoft.DBforMySQL/servers/firewallRules",
+            "apiVersion": "2017-04-30-preview",
+            "properties": {
+                "startIpAddress": "1.10.24.41",
+                "endIpAddress": "1.10.24.46"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/servers/', variables('mySqlServerName'))]"
+            ]
+        },
+        {
+            "name": "[variables('diagnosticsStorageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2017-10-01",
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "properties": {
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "keySource": "Microsoft.Storage",
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "[variables('datadisk')]",
+            "type": "Microsoft.Compute/disks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2017-03-30",
+            "sku": {
+                "name": "Premium_LRS"
+            },
+            "properties": {
+                "creationData": {
+                    "createOption": "Empty"
+                },
+                "diskSizeGB": 32
+            }
+        },
+        {
+            "name": "[variables('virtualMachineName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2016-04-30-preview",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]",
+                "[concat('Microsoft.Compute/disks/', variables('datadisk'))]",
+                "[concat('Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]"
+            ],
+            "properties": {
+                "osProfile": {
+                    "computerName": "[variables('virtualMachineName')]",
+                    "adminUsername": "wvadmin",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "/home/wvadmin/.ssh/authorized_keys",
+                                    "keyData": "[parameters('sshKey')]"
+                                }
+                            ]
+                        }
+                    },
+                    "secrets": []
+                },
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "createOption": "FromImage",
+                        "name": "[variables('osdisk')]",
+                        "diskSizeGB": 32,
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS"
+                        }
+                    },
+                    "dataDisks": [
+                        {
+                            "lun": 0,
+                            "name": "[variables('datadisk')]",
+                            "createOption": "Attach",
+                            "caching": "ReadOnly",
+                            "managedDisk": {
+                                "id": "[resourceId('Microsoft.Compute/disks/', variables('datadisk'))]"
+                            }
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[reference(concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName')), '2015-06-15').primaryEndpoints['blob']]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "[variables('virtualNetworkName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('addressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "[variables('addressPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[variables('networkInterfaceName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2016-09-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[concat(resourceGroup().id,'/providers/Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[concat(resourceGroup().id, '/providers/Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+                }
+            }
+        },
+        {
+            "name": "[variables('publicIpAddressName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "Dynamic",
+                "dnsSettings": {
+                    "domainNameLabel": "[resourceGroup().name]"
+                }
+            }
+        },
+        {
+            "name": "[variables('networkSecurityGroupName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2017-06-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "priority": 1000,
+                            "protocol": "Tcp",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "22"
+                        }
+                    },
+                    {
+                        "name": "HTTPS",
+                        "properties": {
+                            "priority": 1010,
+                            "protocol": "Tcp",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "443",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "HTTP",
+                        "properties": {
+                            "priority": 1020,
+                            "protocol": "Tcp",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "MySQLOutput": {
+            "value": "[reference(concat('Microsoft.DBforMySQL/servers/', variables('MySQLserverName')), providers('Microsoft.DBforMySQL', 'servers').apiVersions[0])]",
+            "type": "object"
+        },
+        "ServerOutput": {
+            "value": "[reference(concat('Microsoft.Compute/virtualMachines/', variables('virtualMachineName')), providers('Microsoft.Compute', 'virtualMachines').apiVersions[0])]",
+            "type": "object"
+        }
+    }
+}

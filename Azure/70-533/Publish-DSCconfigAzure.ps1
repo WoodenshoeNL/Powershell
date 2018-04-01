@@ -1,0 +1,1 @@
+Publish-AzureRmVMDscConfiguration -ConfigurationPath .\ContosoWeb.ps1 -OutputArchivePath .\ContosoWeb.zip

@@ -71,9 +71,7 @@
         "vnetId": "[resourceId('Azure-Test','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
         "publicIPAddressType": "Dynamic",
-        "publicIPAddressName": "PowershellPubIP",
-        "vmExtensionName": "CustomScriptExtension",
-        "RescourceGroupName": "[resourceGroup()]"
+        "publicIPAddressName": "PowershellPubIP"
     },
     "resources": [
         {

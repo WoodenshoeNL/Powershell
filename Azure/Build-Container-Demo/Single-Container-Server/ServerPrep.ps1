@@ -51,11 +51,6 @@ Configuration PrepConfig {
             DependsOn = "[File]DockerDir"
         }
 
-        WindowsFeature ContainerInstall
-        {
-            Ensure = "Present"
-            Name   = "Containers"
-        }
     }
 }
     

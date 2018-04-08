@@ -8,9 +8,6 @@
         "virtualMachineName": {
             "type": "string"
         },
-        "virtualMachineSize": {
-            "type": "string"
-        },
         "adminUsername": {
             "type": "string"
         },
@@ -71,14 +68,15 @@
         "vnetId": "[resourceId('Azure-Test','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
         "publicIPAddressType": "Dynamic",
-        "publicIPAddressName": "PowershellPubIP"
+        "publicIPAddressName": "PowershellPubIP",
+        "vmSize": "Standard_B2s"
     },
     "resources": [
         {
             "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2016-04-30-preview",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
                 "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
@@ -93,7 +91,7 @@
                     }
                 },
                 "hardwareProfile": {
-                    "vmSize": "[parameters('virtualMachineSize')]"
+                    "vmSize": "[variables('vmSize')]"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -129,7 +127,7 @@
             "name": "[parameters('diagnosticsStorageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2015-06-15",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "accountType": "[parameters('diagnosticsStorageAccountType')]"
             }
@@ -159,7 +157,7 @@
             "name": "[parameters('networkInterfaceName')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2016-09-01",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": ["[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"],
             "properties": {
                 "ipConfigurations": [

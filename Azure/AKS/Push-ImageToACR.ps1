@@ -5,6 +5,7 @@ $RegistryName = "Woodenshoe"
 
 
 #Login Registry
+$registry = Get-AzureRmContainerRegistry -ResourceGroupName $resourceGroup -Name $RegistryName
 $creds = Get-AzureRmContainerRegistryCredential -RegistryName $RegistryName -ResourceGroupName $resourceGroup
 docker login $registry.LoginServer -u $creds.Username -p $creds.Password
 

@@ -7,7 +7,7 @@ $AutomationAccount = "Test-AA"
 $ConfigName = "testConfig"
 
 $VMname = "VM-Container001"
-$NodeConfig = "$ConfigName.WebServer"
+$NodeConfig = "testConfig.IsWebServer"
 
 Register-AzureRmAutomationDscNode -AzureVMName $VMname `
 -NodeConfigurationName $NodeConfig `

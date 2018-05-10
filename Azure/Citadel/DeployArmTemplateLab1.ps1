@@ -1,4 +1,4 @@
-rg="lab1"
+$rg="lab1"
 $template="C:\GIT\Powershell\Azure\Citadel\azuredeploy.json"
 $job="job2"
 $storageAccount="citadeltestsa2"

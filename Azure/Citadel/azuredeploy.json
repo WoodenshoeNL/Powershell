@@ -21,20 +21,20 @@
             }
         }
     },
-"variables": {},
-"resources": [
-    {
-        "type": "Microsoft.Storage/storageAccounts",
-        "name": "[parameters('storageAccount')]",
-        "apiVersion": "2015-06-15",
-        "location": "[resourceGroup().location]",
-        "tags": {
-            "displayName": "[parameters('storageAccount')]"
-        },
-        "properties": {
-            "accountType": "[parameters('accountType')]"
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[parameters('storageAccount')]",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "[parameters('storageAccount')]"
+            },
+            "properties": {
+                "accountType": "[parameters('accountType')]"
+            }
         }
-    }
-],
-"outputs": {}
+    ],
+    "outputs": {}
 }

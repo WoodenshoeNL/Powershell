@@ -23,21 +23,26 @@
         }
     },
     "variables": {
-        "storageAccounts": "[concat(parameters('storageAccountPrefix'), toLower(uniqueString(subscription().id)))]"
+        "storageAccount": "[concat(parameters('storageAccountPrefix'), toLower(uniqueString(subscription().id)))]"
     },
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "name": "[variables('storageAccounts')]",
+            "name": "[variables('storageAccount')]",
             "apiVersion": "2015-06-15",
             "location": "[resourceGroup().location]",
             "tags": {
-                "displayName": "[variables('storageAccounts')]"
+                "displayName": "[variables('storageAccount')]"
             },
             "properties": {
                 "accountType": "[parameters('accountType')]"
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "storageAccount": {
+            "type": "string",
+            "value": "[variables('storageAccount')]"
+        }
+    }
 }

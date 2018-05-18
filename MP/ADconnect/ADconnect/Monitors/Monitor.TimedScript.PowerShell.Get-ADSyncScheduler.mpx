@@ -223,7 +223,7 @@ This fragment depends on references:
           <OperationalState ID="BadCondition" MonitorTypeStateID="BadCondition" HealthState="Error" />  <!-- HealthState = Warning or Error -->
         </OperationalStates>
         <Configuration>
-          <IntervalSeconds>300</IntervalSeconds>
+          <IntervalSeconds>3600</IntervalSeconds>
 		  <SyncTime></SyncTime>
           <TimeoutSeconds>120</TimeoutSeconds>
         </Configuration>

@@ -3,7 +3,7 @@
   <Manifest>
     <Identity>
       <ID>ADconnect</ID>
-      <Version>1.0.0.7</Version>
+      <Version>1.0.0.8</Version>
     </Identity>
     <Name>ADconnect</Name>
     <References>
@@ -347,7 +347,7 @@
           <!-- HealthState = Warning or Error -->
         </OperationalStates>
         <Configuration>
-          <IntervalSeconds>300</IntervalSeconds>
+          <IntervalSeconds>3600</IntervalSeconds>
           <SyncTime></SyncTime>
           <TimeoutSeconds>120</TimeoutSeconds>
         </Configuration>

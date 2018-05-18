@@ -58,7 +58,16 @@
     <Compile Include="Classes\Class.And.Discovery.Registry.KeyExists.mpx">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Monitors\Monitor.TimedScript.PowerShell.mpx">
+    <Compile Include="Monitors\Monitor.Service.WithAlert.ADSync.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitors\Monitor.Service.WithAlert.AzureADConnectHealthSyncInsights.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitors\Monitor.Service.WithAlert.AzureADConnectHealthSyncMonitor.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Monitors\Monitor.TimedScript.PowerShell.Get-ADSyncScheduler.mpx">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

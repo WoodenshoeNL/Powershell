@@ -3,11 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "ghuser"
+      "value": "WoodAdmin"
     },
     "adminPassword": {
-      "value": "K4yW6HCAAs3wo9PNqz8F"
-    },
+      "reference": {
+          "keyVault": {
+              "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/lab1/providers/Microsoft.KeyVault/vaults/CitadelKeyVault"
+          },
+          "secretName": "ubuntuDefaultPassword"
+      }
+  },
     "dnsLabelPrefix": {
       "value": "WoodLinuxCitadelLab3"
     }

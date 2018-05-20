@@ -53,7 +53,7 @@
     "publicIPAddressName": "CitadelPIP",
     "publicIPAddressType": "Dynamic",
     "location": "[resourceGroup().location]",
-    "vmSize": "Standard_A1",
+    "vmSize": "Standard_B1s",
     "virtualNetworkName": "CitadelVNET",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
   },

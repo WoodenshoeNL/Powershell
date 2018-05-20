@@ -6,7 +6,7 @@ $Location = "WestEurope"
 $keyVaultName = "CitadelKeyVault"
 
 $testUser = "ubuntuDefaultPassword"
-$testPassword = "BeowAFC76rgkE8jGDxcM"
+$testPassword = "fe8FtvWePHUD674EikLw"
 
 
 New-AzureRmKeyVault -VaultName $keyVaultName -ResourceGroupName $ResourceGroupName -Location $Location -EnabledForTemplateDeployment

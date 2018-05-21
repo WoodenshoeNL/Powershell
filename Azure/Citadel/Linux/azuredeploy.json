@@ -27,7 +27,7 @@
         "description": "Virtual Machine Name."
       }
     },
-    "ubuntuOSVersion": {
+    "ubuntuOSVersion":{ 
       "type": "string",
       "defaultValue": "18.04-LTS",
       "allowedValues": [
@@ -39,6 +39,33 @@
       "metadata": {
         "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
       }
+    },
+    "vnetName": {
+       "type": "string",
+       "metadata": {
+            "description": "Name for the virtual network"
+        }
+    },
+    "vnetPrefix": {
+       "type": "string",
+       "defaultValue": "10.3.0.0/16",
+       "metadata": {
+            "description": "CIDR address space for the virtual network"
+        }
+    },
+    "subnetName": {
+       "type": "string",
+       "defaultValue": "Subnet",
+       "metadata": {
+            "description": "Name for the subnet - defaults to Subnet"
+        }
+    },
+    "subnetPrefix": {
+       "type": "string",
+       "defaultValue": "10.3.0.0/24",
+       "metadata": {
+            "description": "CIDR address space for the subnet"
+        }
     }
   },
   "variables": {
@@ -46,16 +73,12 @@
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
     "nicName": "CitadelVMNic",
-    "addressPrefix": "10.3.0.0/16",
-    "subnetName": "Subnet",
-    "subnetPrefix": "10.3.0.0/24",
     "storageAccountType": "Standard_LRS",
     "publicIPAddressName": "CitadelPIP",
     "publicIPAddressType": "Dynamic",
     "location": "[resourceGroup().location]",
     "vmSize": "Standard_B1s",
-    "virtualNetworkName": "CitadelVNET",
-    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
+    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
   },
   "resources": [
     {
@@ -84,19 +107,19 @@
     {
       "apiVersion": "2017-06-01",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('virtualNetworkName')]",
+      "name": "[parameters('vnetName')]",
       "location": "[variables('location')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('addressPrefix')]"
+            "[parameters('vnetPrefix')]"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('subnetName')]",
+            "name": "[parameters('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefix')]"
+              "addressPrefix": "[parameters('subnetPrefix')]"
             }
           }
         ]
@@ -109,7 +132,7 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        "[resourceId('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
       ],
       "properties": {
         "ipConfigurations": [

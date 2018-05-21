@@ -7,14 +7,20 @@
     },
     "adminPassword": {
       "reference": {
-          "keyVault": {
-              "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/lab1/providers/Microsoft.KeyVault/vaults/CitadelKeyVault"
-          },
-          "secretName": "ubuntuDefaultPassword"
+        "keyVault": {
+          "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/lab1/providers/Microsoft.KeyVault/vaults/CitadelKeyVault"
+        },
+        "secretName": "ubuntuDefaultPassword"
       }
-  },
+    },
     "dnsLabelPrefix": {
-      "value": "WoodLinuxCitadelLab3"
+      "value": "woodcitadellinuxlab3"
+    },
+    "vnetName": {
+      "value": "CitadelVNET"
+    },
+    "subnetName": {
+      "value": "Subnet"
     }
   }
 }

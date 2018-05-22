@@ -13,14 +13,8 @@
         "secretName": "ubuntuDefaultPassword"
       }
     },
-    "dnsLabelPrefix": {
-      "value": "woodcitadellinuxlab3"
-    },
     "vnetName": {
       "value": "CitadelVNET"
-    },
-    "subnetName": {
-      "value": "Subnet"
     }
   }
 }

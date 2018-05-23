@@ -1,0 +1,1 @@
+Set-Content -Path "c:\install\test.log" -Value $(get-date) 

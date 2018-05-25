@@ -1,0 +1,23 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "WoodAdmin"
+    },
+    "numberOfDataDisks": {
+      "value": 2
+    },
+    "adminPassword": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/b2f81635-ee4b-4cac-8610-3569594a6484/resourceGroups/lab1/providers/Microsoft.KeyVault/vaults/CitadelKeyVault"
+        },
+        "secretName": "ubuntuDefaultPassword"
+      }
+    },
+    "vnetName": {
+      "value": "CitadelVNET"
+    }
+  }
+}

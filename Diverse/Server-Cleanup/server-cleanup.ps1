@@ -1,3 +1,8 @@
+#Parameters
+Param(
+   [switch]$DeleteDownloads
+) #end param
+
 ##Init Arrays
 
 $iisLogs = @(
@@ -64,7 +69,10 @@ foreach ($dir in $userDownloads) {
                     if ($item.LastWriteTime -lt (Get-Date).AddDays(-30)) {
                         $teller++
                         $item.FullName
-                        #Remove-Item $item.FullName -Force
+                        Write-Host "[+] File found: $($item.fullname)" -ForegroundColor "Yellow"
+                        if($DeleteDownloads){
+                            Remove-Item $item.FullName -Force
+                        }
                     }
                 }
                 Write-Host "[-] $teller Items found" -ForegroundColor "DarkYellow"

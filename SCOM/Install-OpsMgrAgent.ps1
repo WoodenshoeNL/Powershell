@@ -38,4 +38,4 @@ if(Test-Path "C:\Install\Agent_2016\Cert\$hostname.pfx" )
 }
 
 #Start CertImport
-& "C:\Install\Agent_2016\SupportTools\AMD64\MOMCertImport.exe /subjecname $hostname"
+& "C:\Install\Agent_2016\SupportTools\AMD64\MOMCertImport.exe"

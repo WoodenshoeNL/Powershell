@@ -1,6 +1,8 @@
 md C:\script
 
-rem xcopy "\\mgmt-rds02.management.int\c$\Operations Manager\Agent_2016\Scripts\Cleanup" "C:\script"
+robocopy "\\tsclient\C\Operations Manager\_Script\Cleanup" "C:\script\Cleanup"
+
+powershell -Command "Start-Process powershell -Verb RunAs -ArgumentList '-noexit','-command &{Set-Location C:\script\Cleanup}'"
 
 timeout 5
 

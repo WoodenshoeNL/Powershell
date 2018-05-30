@@ -19,6 +19,6 @@ $principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType
 #$principal = New-ScheduledTaskPrincipal -LogonType S4U
 
 Register-ScheduledTask -Action $Enableaction -Trigger $Enabletrigger -TaskName $enableTaskName -Description "Enable MM 24h Subscriptions" -Principal $principal
-Register-ScheduledTask -Action $Disableaction -Trigger $Disabletrigger -TaskName $DisableTaskName -Description "Enable MM 24h Subscriptions" -Principal $principal
+Register-ScheduledTask -Action $Disableaction -Trigger $Disabletrigger -TaskName $DisableTaskName -Description "Disable MM 24h Subscriptions" -Principal $principal
 
 

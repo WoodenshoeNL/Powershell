@@ -1,1 +1,1 @@
-powershell -Command "Start-Process powershell -Verb RunAs"
+powershell -Command "Start-Process powershell -Verb RunAs -ArgumentList '-noexit','-command &{Set-Location C:\script\}'"

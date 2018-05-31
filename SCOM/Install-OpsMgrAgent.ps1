@@ -2,10 +2,10 @@
 $hostname = $([System.Net.Dns]::GetHostByName(($env:computerName))).hostname
 
 #copy agent files
-$remotepath = "\\tsclient\C\Operations Manager\Agent_2016"
-$path = "C:\Install"
+#$remotepath = "\\tsclient\C\Operations Manager\Agent_2016"
+#$path = "C:\Install"
 
-Copy-Item $remotepath $path -Recurse
+#Copy-Item $remotepath $path -Recurse
 
 #import Root Certs
 
@@ -23,7 +23,7 @@ Import-Certificate -FilePath $certpath -CertStoreLocation Cert:\LocalMachine\Roo
 
 #Add Servers to hostfile
 
-if(-not (Resolve-DnsName mgmt-opm31.management.int -ea ignore)) 
+if(-not (Resolve-DnsName mgmt-opm31.management.int -ErrorAction ignore)) 
 {
     Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "#"
     Add-Content -path "C:\Windows\System32\drivers\etc\hosts" -Value "10.212.8.26     mgmt-opm31.management.int"

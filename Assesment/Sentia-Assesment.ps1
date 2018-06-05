@@ -89,3 +89,14 @@ New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
                                         -Scope $resourceGroup.ResourceId  `
                                         -PolicyDefinition $policy
 
+
+#Assign Policy to Subscription
+$subscription = Get-AzureRmSubscription
+$subResourceId = "/subscriptions/{0}" -f $subscription.SubscriptionId
+New-AzureRMPolicyAssignment -Name "Allowed resource types - Subscription" `
+                                        -Scope $subResourceId `
+                                        -PolicyDefinition $policy
+
+
+
+

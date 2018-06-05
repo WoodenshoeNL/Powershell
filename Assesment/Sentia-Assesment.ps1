@@ -73,5 +73,19 @@ if(!$VNET)
 Set-AzureRmResourceGroup -Name $ResourceGroupName -Tag @{Environment='Test';Company='Sentia'}
 
 
+#Create Policy Definition
 
-  #>
+$policy = New-AzureRmPolicyDefinition -Name "OnlyAllow3Types" `
+                                    -DisplayName "Allowed Type Definitions" `
+                                    -description "Policy Description" `
+                                    -Policy ".\policy.json" `
+                                    -Mode All
+
+
+
+#Assign Policy to Resource Group
+
+New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
+                                        -Scope $resourceGroup.ResourceId  `
+                                        -PolicyDefinition $policy
+

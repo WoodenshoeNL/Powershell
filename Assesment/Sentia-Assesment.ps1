@@ -5,6 +5,9 @@ Param(
 )
 
 $resourceGroupLocation = "westeurope"
+$storageAccountPrefix = "sentia"
+
+
 
 #uniqeu string Function - zoals ARM uniqueString() 
 
@@ -24,5 +27,16 @@ if(!$resourceGroup)
 }
 
 
+#Storage Account aanmaken
 
+$suffixLength = 24 - $storageAccountPrefix.Length
+$storageAccountName =  $storageAccountPrefix + $(Get-UniqueString -id $(Get-AzureRmResourceGroup $ResourceGroupName).ResourceID -length $suffixLength)
 
+New-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName `
+  -Name $storageAccountName `
+  -Location $resourceGroupLocation `
+  -SkuName Standard_LRS `
+  -Kind Storage `
+  -EnableEncryptionService Blob
+
+  #>

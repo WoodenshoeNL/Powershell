@@ -63,29 +63,34 @@ if (!$VNET) {
 Set-AzureRmResourceGroup -Name $ResourceGroupName -Tag @{Environment = 'Test'; Company = 'Sentia'}
 
 
-#Create Policy Definition
-$policy = New-AzureRmPolicyDefinition -Name "OnlyAllow3Types" `
-    -DisplayName "Allowed Type Definitions" `
-    -description "Policy Description" `
-    -Policy ".\policy.json" `
-    -Mode All
+#Test of Policy File aanwezig is.
+if (Test-Path ".\policy.json" ) {
+    #Create Policy Definition
+    $policy = New-AzureRmPolicyDefinition -Name "OnlyAllow3Types" `
+        -DisplayName "Allowed Type Definitions" `
+        -description "Policy Description" `
+        -Policy ".\policy.json" `
+        -Mode All
 
 
 
-#Assign Policy to Resource Group
-$resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName
-New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
-    -Scope $resourceGroup.ResourceId  `
-    -PolicyDefinition $policy
+    #Assign Policy to Resource Group
+    $resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName
+    New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
+        -Scope $resourceGroup.ResourceId  `
+        -PolicyDefinition $policy
 
 
-#Assign Policy to Subscription
-$subscription = Get-AzureRmSubscription
-$subResourceId = "/subscriptions/{0}" -f $subscription.SubscriptionId
-New-AzureRMPolicyAssignment -Name "Allowed resource types - Subscription" `
-    -Scope $subResourceId `
-    -PolicyDefinition $policy
-
+    #Assign Policy to Subscription
+    $subscription = Get-AzureRmSubscription
+    $subResourceId = "/subscriptions/{0}" -f $subscription.SubscriptionId
+    New-AzureRMPolicyAssignment -Name "Allowed resource types - Subscription" `
+        -Scope $subResourceId `
+        -PolicyDefinition $policy
+}
+else {
+    Write-Host "[*] policy.json file is niet aanwezig in de script directory" -ForegroundColor "DarkRed"
+}
 
 
 

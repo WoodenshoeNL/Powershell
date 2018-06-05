@@ -7,7 +7,6 @@ Param(
 $resourceGroupLocation = "westeurope"
 $storageAccountPrefix = "sentia"
 
-
 $VNetName = "SentiaVNet01"
 $VNetAddressPrefix = "172.16.0.0/12"
 
@@ -20,8 +19,8 @@ $SubnetAddressPrefix2 = "172.16.2.0/24"
 $SubnetName3 = "SentiaSubnet3"
 $SubnetAddressPrefix3 = "172.16.3.0/24"
 
-#uniqeu string Function - zoals ARM uniqueString() 
 
+#uniqeu string Function - zoals ARM uniqueString() 
 function Get-UniqueString ([string]$id, $length=13)
 {
     $hashArray = (new-object System.Security.Cryptography.SHA512Managed).ComputeHash($id.ToCharArray())
@@ -68,6 +67,10 @@ if(!$VNET)
     $VNET | Set-AzureRmVirtualNetwork
 
 }
+
+
+#Apply Tag to Resource Group
+Set-AzureRmResourceGroup -Name $ResourceGroupName -Tag @{Environment='Test';Company='Sentia'}
 
 
 

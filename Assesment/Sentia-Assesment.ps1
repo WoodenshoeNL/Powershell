@@ -37,7 +37,7 @@ if(!$resourceGroup)
 
 #Storage Account aanmaken
 $suffixLength = 24 - $storageAccountPrefix.Length
-$storageAccountName =  $storageAccountPrefix + $(Get-UniqueString -id $(Get-AzureRmResourceGroup $ResourceGroupName).ResourceID -length $suffixLength)
+$storageAccountName =  $($storageAccountPrefix + $(Get-UniqueString -id $(Get-AzureRmResourceGroup $ResourceGroupName).ResourceID -length $suffixLength)).ToLower()
 
 $storageAccount = Get-AzureRmStorageAccount -Name $storageAccountName -ResourceGroupName $ResourceGroupName -ErrorAction SilentlyContinue
 if(!$storageAccount)

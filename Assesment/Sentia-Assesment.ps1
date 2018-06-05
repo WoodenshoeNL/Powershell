@@ -1,8 +1,7 @@
 #Parameters & Variablelen
 Param(
     $ResourceGroupName = "Sentia"
- 
-)
+ )
 
 $resourceGroupLocation = "westeurope"
 $storageAccountPrefix = "sentia"
@@ -29,7 +28,6 @@ function Get-UniqueString ([string]$id, $length=13)
 
 
 #aanmaken Resource Group
-
 $resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName -ErrorAction SilentlyContinue
 if(!$resourceGroup)
 {
@@ -38,7 +36,6 @@ if(!$resourceGroup)
 
 
 #Storage Account aanmaken
-
 $suffixLength = 24 - $storageAccountPrefix.Length
 $storageAccountName =  $storageAccountPrefix + $(Get-UniqueString -id $(Get-AzureRmResourceGroup $ResourceGroupName).ResourceID -length $suffixLength)
 
@@ -46,16 +43,15 @@ $storageAccount = Get-AzureRmStorageAccount -Name $storageAccountName -ResourceG
 if(!$storageAccount)
 {
     New-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName `
-    -Name $storageAccountName `
-    -Location $resourceGroupLocation `
-    -SkuName Standard_LRS `
-    -Kind Storage `
-    -EnableEncryptionService Blob
+        -Name $storageAccountName `
+        -Location $resourceGroupLocation `
+        -SkuName Standard_LRS `
+        -Kind Storage `
+        -EnableEncryptionService Blob
 }
 
 
 #Create VNET
-
 $VNET = Get-AzureRmVirtualNetwork -Name $VNetName -ResourceGroupName $ResourceGroupName -ErrorAction SilentlyContinue
 if(!$VNET)
 {
@@ -74,7 +70,6 @@ Set-AzureRmResourceGroup -Name $ResourceGroupName -Tag @{Environment='Test';Comp
 
 
 #Create Policy Definition
-
 $policy = New-AzureRmPolicyDefinition -Name "OnlyAllow3Types" `
                                     -DisplayName "Allowed Type Definitions" `
                                     -description "Policy Description" `
@@ -84,7 +79,7 @@ $policy = New-AzureRmPolicyDefinition -Name "OnlyAllow3Types" `
 
 
 #Assign Policy to Resource Group
-
+$resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName
 New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
                                         -Scope $resourceGroup.ResourceId  `
                                         -PolicyDefinition $policy

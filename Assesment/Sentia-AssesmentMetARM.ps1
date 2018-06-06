@@ -7,13 +7,6 @@ Param(
     [switch]$VerboseOutput
 )
 
-
-#$VNetName = "SentiaVNet01"
-#$VNetAddressPrefix = "172.16.0.0/12"
-
-#$SubnetNamePrefix = "SentiaSubnet"
-#$SubnetAddressPrefixPrefix = "172.16."
-
 Write-Host "[*] Start Script" -ForegroundColor "White"
 #uniqeu string Function - zoals ARM uniqueString() 
 function Get-UniqueString ([string]$id, $length = 13) {
@@ -36,49 +29,6 @@ if (!$resourceGroup) {
 Write-Host "[*] Start ARM Deployment Storage Account & VNet" -ForegroundColor "White"
 New-AzureRmResourceGroupDeployment -TemplateParameterFile ".\Parameter.json" -TemplateFile ".\Template.json" -ResourceGroupName $ResourceGroupName -Verbose
 
-<#
-#Storage Account aanmaken
-$suffixLength = 24 - $storageAccountPrefix.Length
-$storageAccountName = $($storageAccountPrefix + $(Get-UniqueString -id $(Get-AzureRmResourceGroup $ResourceGroupName).ResourceID -length $suffixLength)).ToLower()
-
-$storageAccount = Get-AzureRmStorageAccount -Name $storageAccountName -ResourceGroupName $ResourceGroupName -ErrorAction SilentlyContinue
-if (!$storageAccount) {
-    Write-Host "[*] Create Storage Account" -ForegroundColor "White"
-    $output = New-AzureRmStorageAccount -ResourceGroupName $ResourceGroupName `
-            -Name $storageAccountName `
-            -Location $resourceGroupLocation `
-            -SkuName Standard_LRS `
-            -Kind Storage `
-            -EnableEncryptionService Blob
-    if($VerboseOutput){
-        $output
-    }
-}
-
-
-#Create VNET
-$VNET = Get-AzureRmVirtualNetwork -Name $VNetName -ResourceGroupName $ResourceGroupName -ErrorAction SilentlyContinue
-if (!$VNET) {
-    Write-Host "[*] Create VNet + Subnet 1" -ForegroundColor "White"
-    $SubnetConfig = New-AzureRmVirtualNetworkSubnetConfig -Name $($SubnetNamePrefix + "1") -AddressPrefix $($SubnetAddressPrefixPrefix + "1.0/24")
-    $VNET = New-AzureRmVirtualNetwork -Name $VNetName -ResourceGroupName $ResourceGroupName -Location $resourceGroupLocation -AddressPrefix $VNetAddressPrefix -Subnet $SubnetConfig
-
-    if ($numberOfSubnets -gt 1){
-        foreach($subnetNumber in 2..$numberOfSubnets){
-            Write-Host "[*] Create Subnet $subnetNumber" -ForegroundColor "White"
-            $output = Add-AzureRmVirtualNetworkSubnetConfig -Name  $($SubnetNamePrefix + $subnetNumber) `
-                        -VirtualNetwork $VNET -AddressPrefix $($SubnetAddressPrefixPrefix + $subnetNumber + ".0/24")
-            if($VerboseOutput){
-                $output
-            }
-        }
-        $output = $VNET | Set-AzureRmVirtualNetwork
-        if($VerboseOutput){
-            $output
-        }
-    }
-}
-#>
 
 #Apply Tag to Resource Group
 Write-Host "[*] Set Tag" -ForegroundColor "White"

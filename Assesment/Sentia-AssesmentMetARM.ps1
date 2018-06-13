@@ -14,28 +14,34 @@ function Get-UniqueString ([string]$id, $length = 13) {
     -join ($hashArray[1..$length] | ForEach-Object { [char]($_ % 26 + [byte][char]'a') })
 }
 
+#set Verbose Settings
+if ($VerboseOutput) {
+    $VerbosePreference = "continue" 
+    Write-Host "[*] Enable Verbose Output" -ForegroundColor "White"
+}
+
 
 #aanmaken Resource Group
 $resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName -ErrorAction SilentlyContinue
 if (!$resourceGroup) {
     Write-Host "[*] Create Resource Group" -ForegroundColor "White"
     $output = New-AzureRmResourceGroup -Name $ResourceGroupName -Location $resourceGroupLocation
-    if($VerboseOutput){
-        $output
-    }
+    Write-Verbose $output
 }
 
 
 Write-Host "[*] Start ARM Deployment Storage Account & VNet" -ForegroundColor "White"
-New-AzureRmResourceGroupDeployment -TemplateParameterFile ".\Parameter.json" -TemplateFile ".\Template.json" -ResourceGroupName $ResourceGroupName -Verbose
-
+if ($VerboseOutput) {
+    New-AzureRmResourceGroupDeployment -TemplateParameterFile ".\Parameter.json" -TemplateFile ".\Template.json" -ResourceGroupName $ResourceGroupName -Verbose
+}
+else {
+    $output = New-AzureRmResourceGroupDeployment -TemplateParameterFile ".\Parameter.json" -TemplateFile ".\Template.json" -ResourceGroupName $ResourceGroupName
+}
 
 #Apply Tag to Resource Group
 Write-Host "[*] Set Tag" -ForegroundColor "White"
 $output = Set-AzureRmResourceGroup -Name $ResourceGroupName -Tag @{Environment = 'Test'; Company = 'Sentia'}
-if($VerboseOutput){
-    $output
-}
+Write-Verbose $output
 
 
 #Test of Policy File aanwezig is.
@@ -48,31 +54,30 @@ if (Test-Path ".\policy.json" ) {
         -Policy ".\policy.json" `
         -Mode All
 
-
-
     #Assign Policy to Resource Group
     Write-Host "[*] Assign Policy to Resource Group" -ForegroundColor "White"
     $resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
-                -Scope $resourceGroup.ResourceId  `
-                -PolicyDefinition $policy
-    if($VerboseOutput){
-        $output
-    }
+        -Scope $resourceGroup.ResourceId  `
+        -PolicyDefinition $policy
+    Write-Verbose $output
 
     #Assign Policy to Subscription
     Write-Host "[*] Assign Policy to Subscription" -ForegroundColor "White"
     $subscription = Get-AzureRmSubscription
     $subResourceId = "/subscriptions/{0}" -f $subscription.SubscriptionId
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - Subscription" `
-                -Scope $subResourceId `
-                -PolicyDefinition $policy
-    if($VerboseOutput){
-        $output
-    }
+        -Scope $subResourceId `
+        -PolicyDefinition $policy
+    Write-Verbose $output
 }
 else {
     Write-Host "[*] policy.json file is niet aanwezig in de script directory" -ForegroundColor "DarkRed"
+}
+
+#Reset old verbose settings
+if ($VerboseOutput) {
+    $VerbosePreference = "SilentlyContinue"
 }
 
 Write-Host "[*] Script Finished" -ForegroundColor "White"

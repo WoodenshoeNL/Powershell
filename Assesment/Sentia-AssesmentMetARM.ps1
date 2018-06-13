@@ -47,7 +47,7 @@ Write-Verbose $($output| Format-List | Out-String)
 #Test of Resource-Types.json File aanwezig is.
 if (Test-Path ".\Resource-Types.json" ) {
     #Set Policy Definition
-    Write-Host "[*] Create Policy Definition" -ForegroundColor "White"
+    Write-Host "[*] Set Policy Definition" -ForegroundColor "White"
     $policy = Get-AzureRmPolicyDefinition | where-object {$_.properties.displayname -eq 'Allowed resource types'}
 
     #Lees de Resource type file in

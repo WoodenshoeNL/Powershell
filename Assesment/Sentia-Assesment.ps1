@@ -84,24 +84,22 @@ if($VerboseOutput){
 }
 
 
-#Test of Policy File aanwezig is.
-if (Test-Path ".\policy.json" ) {
-    #Create Policy Definition
-    Write-Host "[*] Create Policy Definition" -ForegroundColor "White"
-    $policy = New-AzureRmPolicyDefinition -Name "OnlyAllow3Types" `
-        -DisplayName "Allowed Type Definitions" `
-        -description "Policy Description" `
-        -Policy ".\policy.json" `
-        -Mode All
+#Test of Resource-Types.json File aanwezig is.
+if (Test-Path ".\Resource-Types.json" ) {
+    #Set Policy Definition
+    Write-Host "[*] Set Policy Definition" -ForegroundColor "White"
+    $policy = Get-AzureRmPolicyDefinition | where-object {$_.properties.displayname -eq 'Allowed resource types'}
 
-
+    #Lees de Resource type file in
+    $ResourceTypes = Get-Content ".\Resource-Types.json" | ConvertFrom-Json
 
     #Assign Policy to Resource Group
     Write-Host "[*] Assign Policy to Resource Group" -ForegroundColor "White"
     $resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
-                -Scope $resourceGroup.ResourceId  `
-                -PolicyDefinition $policy
+        -Scope $resourceGroup.ResourceId  `
+        -listOfResourceTypesAllowed $ResourceTypes `
+        -PolicyDefinition $policy
     if($VerboseOutput){
         $output
     }
@@ -111,14 +109,15 @@ if (Test-Path ".\policy.json" ) {
     $subscription = Get-AzureRmSubscription
     $subResourceId = "/subscriptions/{0}" -f $subscription.SubscriptionId
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - Subscription" `
-                -Scope $subResourceId `
-                -PolicyDefinition $policy
+        -Scope $subResourceId `
+        -listOfResourceTypesAllowed $ResourceTypes `
+        -PolicyDefinition $policy
     if($VerboseOutput){
         $output
     }
 }
 else {
-    Write-Host "[*] policy.json file is niet aanwezig in de script directory" -ForegroundColor "DarkRed"
+    Write-Host "[*] Resource-Types.json file is niet aanwezig in de script directory" -ForegroundColor "DarkRed"
 }
 
 Write-Host "[*] Script Finished" -ForegroundColor "White"

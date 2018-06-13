@@ -7,7 +7,7 @@
             "defaultValue": "sentia",
             "metadata": {
                 "description": "Storage Account Prefix"
-            },
+            }
         },
         "VNetName": {
            "type": "string",

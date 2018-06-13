@@ -26,7 +26,7 @@ $resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName -ErrorAction 
 if (!$resourceGroup) {
     Write-Host "[*] Create Resource Group" -ForegroundColor "White"
     $output = New-AzureRmResourceGroup -Name $ResourceGroupName -Location $resourceGroupLocation
-    Write-Verbose $output
+    Write-Verbose $($output| Format-List | Out-String)
 }
 
 
@@ -41,7 +41,7 @@ else {
 #Apply Tag to Resource Group
 Write-Host "[*] Set Tag" -ForegroundColor "White"
 $output = Set-AzureRmResourceGroup -Name $ResourceGroupName -Tag @{Environment = 'Test'; Company = 'Sentia'}
-Write-Verbose $output
+Write-Verbose $($output| Format-List | Out-String)
 
 
 #Test of Policy File aanwezig is.
@@ -60,7 +60,7 @@ if (Test-Path ".\policy.json" ) {
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
         -Scope $resourceGroup.ResourceId  `
         -PolicyDefinition $policy
-    Write-Verbose $output
+    Write-Verbose $($output| Format-List | Out-String)
 
     #Assign Policy to Subscription
     Write-Host "[*] Assign Policy to Subscription" -ForegroundColor "White"
@@ -69,7 +69,7 @@ if (Test-Path ".\policy.json" ) {
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - Subscription" `
         -Scope $subResourceId `
         -PolicyDefinition $policy
-    Write-Verbose $output
+    Write-Verbose $($output| Format-List | Out-String)
 }
 else {
     Write-Host "[*] policy.json file is niet aanwezig in de script directory" -ForegroundColor "DarkRed"

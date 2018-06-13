@@ -1,11 +1,15 @@
 {
-    "if": {
-      "not": {
-        "field": "type",
-        "in": ["Microsoft.Compute/*","Microsoft.network/*","Microsoft.storage/*" ]
-      }
-    },
-    "then": {
-      "effect": "deny"
+  "if": {
+    "not": {
+      "field": "type",
+      "in": [
+        "Microsoft.Compute/*",
+        "Microsoft.network/*",
+        "Microsoft.storage/*"
+      ]
     }
+  },
+  "then": {
+    "effect": "deny"
   }
+}

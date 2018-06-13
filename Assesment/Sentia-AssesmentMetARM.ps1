@@ -44,21 +44,21 @@ $output = Set-AzureRmResourceGroup -Name $ResourceGroupName -Tag @{Environment =
 Write-Verbose $($output| Format-List | Out-String)
 
 
-#Test of Policy File aanwezig is.
-if (Test-Path ".\policy.json" ) {
-    #Create Policy Definition
+#Test of Resource-Types.json File aanwezig is.
+if (Test-Path ".\Resource-Types.json" ) {
+    #Set Policy Definition
     Write-Host "[*] Create Policy Definition" -ForegroundColor "White"
-    $policy = New-AzureRmPolicyDefinition -Name "OnlyAllow3Types" `
-        -DisplayName "Allowed Type Definitions" `
-        -description "Policy Description" `
-        -Policy ".\policy.json" `
-        -Mode All
+    $policy = Get-AzureRmPolicyDefinition | where-object {$_.properties.displayname -eq 'Allowed resource types'}
+
+    #Lees de Resource type file in
+    $ResourceTypes = Get-Content ".\Resource-Types.json" | ConvertFrom-Json
 
     #Assign Policy to Resource Group
     Write-Host "[*] Assign Policy to Resource Group" -ForegroundColor "White"
     $resourceGroup = Get-AzureRmResourceGroup -Name $ResourceGroupName
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - RG" `
         -Scope $resourceGroup.ResourceId  `
+        -listOfResourceTypesAllowed $ResourceTypes `
         -PolicyDefinition $policy
     Write-Verbose $($output| Format-List | Out-String)
 
@@ -68,11 +68,12 @@ if (Test-Path ".\policy.json" ) {
     $subResourceId = "/subscriptions/{0}" -f $subscription.SubscriptionId
     $output = New-AzureRMPolicyAssignment -Name "Allowed resource types - Subscription" `
         -Scope $subResourceId `
+        -listOfResourceTypesAllowed $ResourceTypes `
         -PolicyDefinition $policy
     Write-Verbose $($output| Format-List | Out-String)
 }
 else {
-    Write-Host "[*] policy.json file is niet aanwezig in de script directory" -ForegroundColor "DarkRed"
+    Write-Host "[*] Resource-Types.json file is niet aanwezig in de script directory" -ForegroundColor "DarkRed"
 }
 
 #Reset old verbose settings

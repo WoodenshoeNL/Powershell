@@ -38,10 +38,7 @@
           "dependsOn": [],
           "sku": {
               "name": "[parameters('WebApp').sku.name]",
-              "tier": "[parameters('WebApp').sku.tier]",
-              "size": "[parameters('WebApp').sku.size]",
-              "family": "[parameters('WebApp').sku.family]",
-              "capacity": "[parameters('WebApp').sku.capacity]"
+              "tier": "[parameters('WebApp').sku.tier]"
           },
           "kind": "[if(bool(parameters('WebApp').Linux),'linux','app')]",
           "properties": {}

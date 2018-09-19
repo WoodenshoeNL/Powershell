@@ -41,7 +41,12 @@
               "tier": "[parameters('WebApp').sku.tier]"
           },
           "kind": "[if(bool(parameters('WebApp').Linux),'linux','app')]",
-          "properties": {}
+          "properties": {
+            "name": "[variables('appServicePlanName')]",
+            "workerSizeId": "3",
+            "reserved": true,
+            "numberOfWorkers": "1"
+          }
       },
       {
           "comments": "This is the web app, also the default 'nameless' slot.",

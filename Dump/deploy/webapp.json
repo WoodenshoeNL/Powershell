@@ -48,27 +48,6 @@
           "properties": {}
       },
       {
-          "condition": "[or(equals(parameters('WebApp').hostnames[copyIndex()].certificateType, 'KeyVault'),equals(parameters('WebApp').hostnames[copyIndex()].certificateType, 'Blob'))]",
-          "name": "[parameters('WebApp').hostnames[copyIndex()].name]",
-          "type": "Microsoft.Web/certificates",
-          "apiVersion": "[variables('apiVersions').certificates]",
-          "location": "[parameters('location')]",
-          "dependsOn": [
-              "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
-          ],
-          "copy": {
-              "name": "Certificate",
-              "count": "[length(parameters('WebApp').hostnames)]"
-          },
-          "properties": {
-            "keyVaultId": "[if(equals(parameters('WebApp').hostnames[copyIndex()].certificateType, 'KeyVault'), resourceId(parameters('WebApp').hostnames[copyIndex()].keyVaultSubscription,parameters('WebApp').hostnames[copyIndex()].keyVaultResourceGroup,'Microsoft.KeyVault/vaults',parameters('WebApp').hostnames[copyIndex()].keyVaultId), json('null'))]",
-            "keyVaultSecretName": "[if(equals(parameters('WebApp').hostnames[copyIndex()].certificateType, 'KeyVault'), parameters('WebApp').hostnames[copyIndex()].keyVaultSecretName, json('null'))]",
-            "pfxBlob": "[if(equals(parameters('WebApp').hostnames[copyIndex()].certificateType, 'Blob'), parameters('WebApp').hostnames[copyIndex()].certificatePfxBase64, json('null'))]",
-            "password": "[if(equals(parameters('WebApp').hostnames[copyIndex()].certificateType, 'Blob'), parameters('WebApp').hostnames[copyIndex()].certificatePfxPassword, json('null'))]",
-            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
-          }
-      },
-      {
           "comments": "This is the web app, also the default 'nameless' slot.",
           "name": "[variables('webAppPortalName')]",
           "type": "Microsoft.Web/sites",
@@ -80,11 +59,6 @@
           "kind": "[if(bool(parameters('WebApp').Linux),'app,linux','app')]",
           "properties": {
               "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
-              "httpsOnly": "[bool(parameters('WebApp').httpsOnly)]",
-              "siteConfig": {
-                  "connectionStrings": "[parameters('WebApp').connectionStrings]",
-                  "appSettings": "[parameters('WebApp').appSettings]"
-              }
           },
           "resources": [
               {
@@ -95,20 +69,6 @@
                       "[concat('Microsoft.Web/sites/', variables('webAppPortalName'))]"
                   ],
                   "properties": "[parameters('WebApp').ConfigProperties]"
-              },
-              {
-                  "condition": "[bool(parameters('WebApp').sourceControl.useSourceControl)]",
-                  "name": "web",
-                  "type": "sourcecontrols",
-                  "apiVersion": "[variables('apiVersions').sitesResources]",
-                  "dependsOn": [
-                    "[resourceId('Microsoft.Web/Sites', variables('webAppPortalName'))]"
-                  ],
-                  "properties": {
-                    "RepoUrl": "[parameters('WebApp').sourceControl.repoURL]",
-                    "branch": "[parameters('WebApp').sourceControl.branch]",
-                    "IsManualIntegration": "[parameters('WebApp').sourceControl.IsManualIntegration]"
-                  }
               }
           ]
       },
@@ -130,24 +90,6 @@
           },
           "properties": {
               "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
-          }
-      },
-      {
-          "name": "[concat(variables('webAppPortalName'), '/', parameters('WebApp').hostnames[copyIndex()].hostName)]",
-          "type":"Microsoft.Web/sites/hostnameBindings",
-          "apiVersion":"[variables('apiVersions').hostnameBindings]",
-          "location":"[resourceGroup().location]",
-          "dependsOn": [
-              "[concat('Microsoft.Web/sites/',parameters('WebApp').webAppName)]"
-          ],
-          "copy": {
-              "name": "hostnamebinding",
-              "count": "[length(parameters('WebApp').hostnames)]",
-              "mode": "Serial"
-          },
-          "properties":{
-              "sslState":"[if(bool(parameters('WebApp').hostnames[copyIndex()].https),'SniEnabled',json('null'))]",
-              "thumbprint":"[if(bool(parameters('WebApp').hostnames[copyIndex()].https),reference(resourceId('Microsoft.Web/certificates', parameters('WebApp').hostnames[copyIndex()].name)).Thumbprint,json('null'))]"
           }
       }
     ],

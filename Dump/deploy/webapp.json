@@ -23,7 +23,7 @@
           "serverfarms": "2017-08-01",
           "certificates": "2016-03-01",
           "hostnameBindings": "2016-03-01",
-          "sites": "2016-08-01",
+          "sites": "2016-03-01",
           "slots": "2016-08-01",
           "sitesResources": "2015-08-01"
       }

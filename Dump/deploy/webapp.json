@@ -56,19 +56,13 @@
               "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
           ],
           "properties": {
-              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
-          },
-          "resources": [
-              {
-                  "name": "web",
-                  "type": "config",
-                  "apiVersion": "[variables('apiVersions').sitesResources]",
-                  "dependsOn": [
-                      "[concat('Microsoft.Web/sites/', variables('webAppPortalName'))]"
-                  ],
-                  "properties": "[parameters('WebApp').ConfigProperties]"
-              }
-          ]
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "name": "[variables('webAppPortalName')]",
+                "siteConfig": {
+                    "appSettings": [],
+                    "linuxFxVersion": "[parameters('WebApp').ConfigProperties.linuxFxVersion]"
+                }
+          }
       },
       {
           "comments": "This specifies the web app slots.",

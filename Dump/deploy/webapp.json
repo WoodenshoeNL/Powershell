@@ -63,26 +63,6 @@
                     "linuxFxVersion": "[parameters('WebApp').ConfigProperties.linuxFxVersion]"
                 }
           }
-      },
-      {
-          "comments": "This specifies the web app slots.",
-          "name": "[concat(variables('webAppPortalName'), '/', parameters('WebApp').slots[copyIndex()])]",
-          "type": "Microsoft.Web/sites/slots",
-          "apiVersion": "[variables('apiVersions').slots]",
-          "location": "[parameters('location')]",
-          "tags": {
-              "displayName": "WebAppSlots"
-          },
-          "dependsOn": [
-              "[resourceId('Microsoft.Web/Sites', variables('webAppPortalName'))]"
-          ],
-          "copy": {
-              "name": "webPortalSlot",
-              "count": "[length(parameters('WebApp').slots)]"
-          },
-          "properties": {
-              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
-          }
       }
     ],
     "outputs": {

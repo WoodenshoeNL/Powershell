@@ -1,0 +1,244 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "WebApp": {
+            "type": "object",
+            "metadata": {
+                "description": "Object for Webapp properties"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "templateLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of resources, such as templates and DSC modules, that the template depends on."
+            },
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "webAppPortalName": "[concat(parameters('webApp').webAppName)]",
+        "appServicePlanName": "[concat(parameters('webApp').webAppName, '-AppServicePlan')]",
+        "apiVersions": {
+            "serverfarms": "2017-08-01",
+            "certificates": "2016-03-01",
+            "deployments": "2018-05-01",
+            "hostnameBindings": "2016-03-01",
+            "sites": "2016-08-01",
+            "slots": "2016-08-01",
+            "sitesResources": "2015-08-01",
+            "autoScale": "2014-04-01"
+        },
+        "templateUris": {
+            "siteConfigTransform": "[parameters('templateLocation')]"
+        }
+    },
+    "resources": [
+        {
+            "comments": "This app service plan is used for the web app and slots.",
+            "name": "[variables('appServicePlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "[variables('apiVersions').serverfarms]",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "sku": {
+                "name": "[parameters('webApp').sku.name]",
+                "tier": "[parameters('webApp').sku.tier]",
+                "size": "[parameters('webApp').sku.size]",
+                "family": "[parameters('webApp').sku.family]",
+                "capacity": "[parameters('webApp').sku.capacity]"
+            },
+            "kind": "[if(bool(parameters('webApp').Linux),'linux','app')]",
+            "properties": {
+                "name": "[variables('appServicePlanName')]",
+                "workerSizeId": "[parameters('webApp').farmProperties.workerSizeId]",
+                "reserved": "[parameters('webApp').farmProperties.reserved]",
+                "numberOfWorkers": "[parameters('webApp').farmProperties.numberOfWorkers]"
+            }
+        },
+        {
+            "condition": "[or(equals(parameters('webApp').hostNames[copyIndex()].certificateType, 'KeyVault'),equals(parameters('webApp').hostNames[copyIndex()].certificateType, 'Blob'))]",
+            "name": "[parameters('webApp').hostNames[copyIndex()].name]",
+            "type": "Microsoft.Web/certificates",
+            "apiVersion": "[variables('apiVersions').certificates]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            ],
+            "copy": {
+                "name": "Certificate",
+                "count": "[length(parameters('webApp').hostNames)]"
+            },
+            "properties": {
+                "keyVaultId": "[if(equals(parameters('webApp').hostNames[copyIndex()].certificateType, 'KeyVault'), resourceId(parameters('webApp').hostNames[copyIndex()].keyVaultSubscription,parameters('webApp').hostNames[copyIndex()].keyVaultResourceGroup,'Microsoft.KeyVault/vaults',parameters('webApp').hostNames[copyIndex()].keyVaultId), json('null'))]",
+                "keyVaultSecretName": "[if(equals(parameters('webApp').hostNames[copyIndex()].certificateType, 'KeyVault'), parameters('webApp').hostNames[copyIndex()].keyVaultSecretName, json('null'))]",
+                "pfxBlob": "[if(equals(parameters('webApp').hostNames[copyIndex()].certificateType, 'Blob'), parameters('webApp').hostNames[copyIndex()].certificatePfxBase64, json('null'))]",
+                "password": "[if(equals(parameters('webApp').hostNames[copyIndex()].certificateType, 'Blob'), parameters('webApp').hostNames[copyIndex()].certificatePfxPassword, json('null'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            }
+        },
+        {
+            "name": "siteConfigTransform",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersions').deployments]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('templateUris').siteConfigTransform]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "connectionStrings": {
+                        "value": "[parameters('webApp').connectionStrings]"
+                    }
+                }
+            }
+        },
+        {
+            "comments": "This is the web app, also the default 'nameless' slot.",
+            "name": "[variables('webAppPortalName')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "[variables('apiVersions').sites]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            ],
+            "kind": "[if(bool(parameters('webApp').linux),'app,linux','app')]",
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "httpsOnly": "[bool(parameters('webApp').httpsOnly)]",
+                "siteConfig": {
+                    "connectionStrings": "[parameters('webApp').connectionStrings]",
+                }
+            },
+            "resources": [
+                {
+                    "name": "web",
+                    "type": "config",
+                    "apiVersion": "[variables('apiVersions').sitesResources]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', variables('webAppPortalName'))]"
+                    ],
+                    "properties": "[parameters('webApp').configProperties]"
+                },
+                {
+                    "condition": "[bool(parameters('webApp').sourceControl.useSourceControl)]",
+                    "name": "web",
+                    "type": "sourcecontrols",
+                    "apiVersion": "[variables('apiVersions').sitesResources]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', variables('webAppPortalName'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "[parameters('webApp').sourceControl.repoURL]",
+                        "branch": "[parameters('webApp').sourceControl.branch]",
+                        "IsManualIntegration": "[parameters('webApp').sourceControl.isManualIntegration]"
+                    }
+                }
+            ]
+        },
+        {
+            "comments": "This specifies the web app slots.",
+            "name": "[concat(variables('webAppPortalName'), '/', parameters('webApp').slots[copyIndex()])]",
+            "type": "Microsoft.Web/sites/slots",
+            "apiVersion": "[variables('apiVersions').slots]",
+            "location": "[parameters('location')]",
+            "tags": {
+                "displayName": "WebAppSlots"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/Sites', variables('webAppPortalName'))]"
+            ],
+            "copy": {
+                "name": "webPortalSlot",
+                "count": "[length(parameters('webApp').slots)]"
+            },
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            }
+        },
+        {
+            "name": "[concat(variables('webAppPortalName'), '/', parameters('webApp').hostNames[copyIndex()].hostName)]",
+            "type": "Microsoft.Web/sites/hostnameBindings",
+            "apiVersion": "[variables('apiVersions').hostnameBindings]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Web/sites/',parameters('webApp').webAppName)]"
+            ],
+            "copy": {
+                "name": "hostnamebinding",
+                "count": "[length(parameters('webApp').hostNames)]",
+                "mode": "Serial"
+            },
+            "properties": {
+                "sslState": "[if(bool(parameters('webApp').hostNames[copyIndex()].https),'SniEnabled',json('null'))]",
+                "thumbprint": "[if(bool(parameters('webApp').hostNames[copyIndex()].https),reference(resourceId('Microsoft.Web/certificates', parameters('webApp').hostNames[copyIndex()].name)).Thumbprint,json('null'))]"
+            }
+        },
+        {
+            "condition": "[bool(parameters('webApp').autoScale.useAutoScale)]",
+            "name": "[concat(variables('appServicePlanName'), '-settings')]",
+            "type": "Microsoft.Insights/autoscalesettings",
+            "apiVersion": "[variables('apiVersions').autoScale]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            ],
+            "properties": {
+                "profiles": [
+                    {
+                        "name": "[parameters('webApp').autoScale.name]",
+                        "capacity": {
+                            "minimum": "[parameters('webApp').autoScale.minimum]",
+                            "maximum": "[parameters('webApp').autoScale.maximum]",
+                            "default": "[parameters('webApp').autoScale.default]"
+                        },
+                        "copy": [
+                            {
+                                "name": "rules",
+                                "count": "[length(parameters('webApp').autoScale.rules)]",
+                                "input": {
+                                    "metricTrigger": {
+                                        "metricName": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.metricName]",
+                                        "metricNamespace": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.metricNamespace]",
+                                        "metricResourceUri": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                                        "timeGrain": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.timeGrain]",
+                                        "statistic": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.statistic]",
+                                        "timeWindow": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.timeWindow]",
+                                        "timeAggregation": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.timeAggregation]",
+                                        "operator": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.operator]",
+                                        "threshold": "[parameters('webApp').autoScale.rules[copyIndex('rules')].metricTrigger.threshold]"
+                                    },
+                                    "scaleAction": {
+                                        "direction": "[parameters('webApp').autoScale.rules[copyIndex('rules')].scaleAction.direction]",
+                                        "type": "[parameters('webApp').autoScale.rules[copyIndex('rules')].scaleAction.type]",
+                                        "value": "[parameters('webApp').autoScale.rules[copyIndex('rules')].scaleAction.value]",
+                                        "cooldown": "[parameters('webApp').autoScale.rules[copyIndex('rules')].scaleAction.cooldown]"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "enabled": true,
+                "targetResourceUri": "[resourceId('Microsoft.Web/serverFarms/', variables('appServicePlanName'))]"
+            }
+        }
+    ],
+    "outputs": {
+        "debug": {
+            "value": "[string(if(bool(parameters('webApp').linux),'linux','app'))]",
+            "type": "string"
+        }
+    }
+}

@@ -10,13 +10,22 @@ $Execute = "ReadAndExecute"
 $Modify = "Modify"
 $Full = "FullControl"
 
+#inheritance
+$FullInherit = "ContainerInherit,ObjectInherit"         #This folder, subfolders and files    - $PropagationFlags = "None"
+$FolderAndSubfolder = "ContainerInherit"                #This folder, subfolders              - $PropagationFlags = "None"
+$Folderonly = "None"                                    #This folder only                     - $PropagationFlags = "None"
+$FolderAndFiles = "ObjectInherit"                       #This folder and Files                - $PropagationFlags = "None"
+$FilesOnly = "ObjectInherit"                            #This files only                      - $PropagationFlags = "InheritOnly"
 
 function Set-Permission {
     param (
         $User,
         $Permission,
         $Path,
-        $right = "Allow"
+        $right = "Allow",
+        $InheritanceFlags = "ContainerInherit,ObjectInherit",
+        $PropagationFlags = "None"
+
     )
     #Check Directory
     if ($(Test-Path -Path $Path) -eq $false){
@@ -25,7 +34,7 @@ function Set-Permission {
     }
     #Set ACL
     $acl = Get-Acl -Path $Path
-    $AccessRule = New-Object system.security.accesscontrol.filesystemaccessrule($User,$Permission,'ContainerInherit,ObjectInherit', 'None', $right)
+    $AccessRule = New-Object system.security.accesscontrol.filesystemaccessrule($User,$Permission, $InheritanceFlags, $PropagationFlags, $right)
     $Acl.SetAccessRule($AccessRule)
     Set-Acl -path $Path -AclObject $Acl
     Write-Host "Set Permissions | Path: $Path | User: $User | Permission: $Permission"
